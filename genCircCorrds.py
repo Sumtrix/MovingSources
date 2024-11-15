@@ -34,9 +34,9 @@ def save_to_file(filename, points):
 # ----------------------------------------
 
 radius = 3                # Radius of the circle
-rotangle = 6*np.pi
+rotangle = 3 * (2 * np.pi)
 points_per_rot = 200
-num_points = points_per_rot*(rotangle/np.pi)          # Number of points along the circle
+num_points = points_per_rot*(rotangle/2*np.pi)          # Number of points along the circle
 speed = 20                # duration of one rotation
 height = 1.5
 

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE session [
+    <!ENTITY coords SYSTEM "/paths/circle_test.txt">
+    <!ENTITY orients SYSTEM "/paths/orientations_test.txt">
+
+]>
+<session name="example_vertices" duration="20" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
+  <scene name="vertices" guiscale="15">
+    <source name="piano" color="#101077">
+      <position>
+        &coords;
+      </position>
+
+      <orientation>
+        &orients;
+      </orientation>
+
+      <sound name="leftside" x="-0.7">
+        <plugins>
+          <sndfile name="sounds/jazzclub-piano1.wav" level="75"/>
+        </plugins>
+      </sound>
+
+      <sound name="rightside" x="0.7">
+        <plugins>
+          <sndfile name="sounds/jazzclub-piano2.wav" level="75"/>
+        </plugins>
+      </sound>
+    </source>
+
+    <facegroup shoebox="15 10 3" name="walls_and_floor">
+      <position> 0 2 0.5 1.5 </position>
+    </facegroup>
+    
+    <reverb type="simplefdn" volumetric="15 10 3" image="false">
+      <position> 0 2 0.5 1.5 </position>
+    </reverb>
+
+    <receiver name="out" type="ortf">
+      <position>0 0 0 1.7</position>
+    </receiver>
+  </scene>
+  <connect src="render.vertices:out_l" dest="system:playback_1"/>
+  <connect src="render.vertices:out_r" dest="system:playback_2"/>
+</session>

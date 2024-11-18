@@ -1,17 +1,16 @@
 import numpy as np
 
 
-def generate_orientations(rotangle, orOffset, num_points, duration, lockorientation=False):
+def generate_orientations(rotangle, orOffset, num_points, duration):
     angle = rotangle / num_points
     angles = np.linspace(0, rotangle + angle, num_points+1, endpoint=False)
     # assuming equidistant sampling
     time_interval = duration / num_points
 
     orientation = []
-    if lockorientation:
-        for i in range(num_points+1):
-            t = i * time_interval
-            orientation.append((t, (angles[i]/np.pi)*180 + orOffset, 0, 0))
+    for i in range(num_points+1):
+        t = i * time_interval
+        orientation.append((t, (angles[i]/np.pi)*180 + orOffset, 0, 0))
     return orientation
 
 
@@ -34,15 +33,20 @@ def generate_circle_points(rotangle, radius, height, num_points, duration):
 
 def save_to_file(filename, points):
     with open(filename, 'w') as f:
-        for t, x, y, z in points:
+        print(len(points))
+        if len(points) == 4:
+            t, x, y, z = points
             f.write(f"{t:.2f} {x:.2f} {y:.2f} {z:.2f}\n")
+        else:
+            for t, x, y, z in points:
+                f.write(f"{t:.2f} {x:.2f} {y:.2f} {z:.2f}\n")
     print(f"Data saved to {filename}")
 
 
 # ----------------------------------------
 # ----------------------------------------
 
-radius = 3                # Radius of the circle
+radius = 1                # Radius of the circle
 num_rotations = 1
 rotangle = num_rotations * (2 * np.pi)
 points_per_rot = 200
@@ -52,9 +56,18 @@ height = 1.6
 
 lock = True 
 orOffset = -90
+fileName = "N0Srot"
+saveStart = True
 
 points = generate_circle_points(rotangle, radius, height, num_points, duration)
-orientations = generate_orientations(rotangle, orOffset, num_points, duration, lock)
+save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p.txt", points)
 
-save_to_file(f"./scenes/paths/circle_test.txt", points)
-save_to_file(f"./scenes/paths/orientations_test.txt", orientations)
+if saveStart:
+    save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p_start.txt", points[0])
+
+
+if lock:
+    orientations = generate_orientations(rotangle, orOffset, num_points, duration)
+    save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_o.txt", orientations)
+    if saveStart:
+        save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_o_start.txt", orientations[0])

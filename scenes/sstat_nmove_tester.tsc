@@ -1,57 +1,37 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE session [
-    <!ENTITY coords SYSTEM "/paths/circle_test.txt">
-    <!ENTITY orients SYSTEM "/paths/orientations_test.txt">
-
+    <!ENTITY coords SYSTEM "/paths/N0Srot_1_20_p.txt">
+    <!ENTITY orients SYSTEM "/paths/N0Srot_1_20_o.txt">
+    <!ENTITY coords_start SYSTEM "/paths/N0Srot_1_20_p_start.txt">
+    <!ENTITY orients_start SYSTEM "/paths/N0Srot_1_20_o_start.txt">
 ]>
 <session name="example_vertices" duration="20" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
-  <scene guiscale="15">
+  <scene name="labscene" guiscale="15">
 
     <source name="masker" color="#101077">
-    
+      <sound name="noise">
+        <plugins>
+          <sndfile name="sounds/gen_white_noise.wav" level="70"/>
+        </plugins>
+      </sound>
+      <position> &coords; </position>
+      <orientation> &orients; </orientation>
+      </source>
+
+    <source name="speaker" color="#101017">
       <sound name="jazz">
         <plugins>
           <sndfile name="sounds/jazzclub-piano1.wav" level="75"/>
         </plugins>
       </sound>
-
-      <position>
-        &coords;
-      </position>
-      
-      <orientation>
-        &orients;
-      </orientation>
-    
-      <sound name="speaker">
-        <plugins>
-          <sndfile name="sounds/jazzclub-piano1.wav" level="75"/>
-        </plugins>
-      </sound>
-
-      <position>
-        &coords;
-      </position>
-      
-      <orientation>
-        &orients;
-      </orientation>
-    
-    
+      <position> &coords_start; </position>
+      <orientation> &orients_start; </orientation>
     </source>
-
-    <facegroup shoebox="15 10 3" name="walls_and_floor">
-      <position> 0 2 0.5 1.5 </position>
-    </facegroup>
-    
-    <reverb type="simplefdn" volumetric="15 10 3" image="false">
-      <position> 0 2 0.5 1.5 </position>
-    </reverb>
 
     <receiver name="out" type="ortf">
       <position>0 0 0 1.7</position>
     </receiver>
   </scene>
-  <connect src="render.vertices:out_l" dest="system:playback_1"/>
-  <connect src="render.vertices:out_r" dest="system:playback_2"/>
+  <connect src="render.labscene:out_l" dest="system:playback_1"/>
+  <connect src="render.labscene:out_r" dest="system:playback_2"/>
 </session>

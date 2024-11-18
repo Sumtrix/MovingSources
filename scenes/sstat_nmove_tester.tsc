@@ -5,27 +5,39 @@
 
 ]>
 <session name="example_vertices" duration="20" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
-  <scene name="vertices" guiscale="15">
-    <source name="piano" color="#101077">
-      <position>
-        &coords;
-      </position>
+  <scene guiscale="15">
 
-      <orientation>
-        &orients;
-      </orientation>
-
-      <sound name="leftside" x="-0.7">
+    <source name="masker" color="#101077">
+    
+      <sound name="jazz">
         <plugins>
           <sndfile name="sounds/jazzclub-piano1.wav" level="75"/>
         </plugins>
       </sound>
 
-      <sound name="rightside" x="0.7">
+      <position>
+        &coords;
+      </position>
+      
+      <orientation>
+        &orients;
+      </orientation>
+    
+      <sound name="speaker">
         <plugins>
-          <sndfile name="sounds/jazzclub-piano2.wav" level="75"/>
+          <sndfile name="sounds/jazzclub-piano1.wav" level="75"/>
         </plugins>
       </sound>
+
+      <position>
+        &coords;
+      </position>
+      
+      <orientation>
+        &orients;
+      </orientation>
+    
+    
     </source>
 
     <facegroup shoebox="15 10 3" name="walls_and_floor">

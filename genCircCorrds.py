@@ -60,25 +60,40 @@ lockOr = False
 #fileName = "test"
 
 
-# 180 rot in 20 s
+# 0 rot in 20 s
 saveStart = True
 fileName = "0rot"
 rotStart = 0
 points_speech = generate_circle_points(rotStart, rotangle, radius, height, num_points, duration)
 save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p.txt", points_speech)
 if saveStart:
-    save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p_start.txt", points_speech[0])
+    save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_p_start.txt", points_speech[0])
 
+# 0 rot in 20 s
+saveStart = True
+fileName = "90rot"
+rotStart = 90
+points_speech = generate_circle_points(rotStart, rotangle, radius, height, num_points, duration)
+save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p.txt", points_speech)
+if saveStart:
+    save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_p_start.txt", points_speech[0])
+
+
+# 180 rot in 20 s
 saveStart = True
 fileName = "180rot"
 points_noise = generate_circle_points(rotStart, rotangle, radius, height, num_points, duration)
 save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p.txt", points_noise)
 if saveStart:
-    save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p_start.txt", points_speech[0])
+    save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_p_start.txt", points_speech[0])
 
 
 if lockOr:
     orientations = generate_orientations(rotStart, rotangle, num_points, duration)
     save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_o.txt", orientations)
     if saveStart:
-        save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_o_start.txt", orientations[0])
+        save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_o_start.txt", orientations[0])
+
+
+
+

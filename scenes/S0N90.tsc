@@ -18,7 +18,7 @@
     <source name="masker" color="#101077">
       <sound name="noise">
         <plugins>
-          <sndfile name="sounds/gen_white_noise.wav" level="70"/>
+          <sndfile name="sounds/gen_white_noise.wav" level="68"/>
         </plugins>
       </sound>
       <position> &coords_noise; </position>

@@ -44,14 +44,15 @@ type = "osci"
 start_angle = 0
 radius = 1
 rotation_angle = 360
-angle_range = 60  # +- 30°
+angle_range = 60        # +- 30°
 osci_type = "sin"       # "cos", "lin", ...
-freq = 2
+freq = 3
 Scene.addSource(name, type, start_angle, radius, rotation_angle, angle_range, osci_type, freq)
 
 print(Scene.sources.head())
-# scene_name = "S0NrotNosci"
-# Scene.save()
+
+scene_name = "S0NrotNosci"
+Scene.save(scene_name)
 
 
 

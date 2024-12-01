@@ -52,8 +52,8 @@ class PathGenerator():
 
 
     def genCircleCoords(self, start_angle, radius, rotation_angle):
-        num_points = int(round(self.pprot*(rotation_angle/2*np.pi), 0))
-        angles = np.linspace(start_angle, start_angle + rotation_angle, num_points+1, endpoint=False)
+        num_points = int(round(self.pprot*(rotation_angle/360), 0))
+        angles = np.radians(np.linspace(start_angle, start_angle + rotation_angle, num_points+1, endpoint=False))
         x_coords = radius * np.cos(angles)
         y_coords = radius * np.sin(angles)
         time_interval = self.duration / self.pprot
@@ -89,6 +89,22 @@ class PathGenerator():
         scene_folder = os.path.join(root, name)
         if not os.path.exists(scene_folder):
             os.makedirs(scene_folder)
+        
+        for _, row in self.sources.iterrows():
+            source_name = row['name']
+            path = row['path']
+            stats_str = f"{'_'.join(map(str, row['stats']))}"
+            file = os.path.join(scene_folder, f"{source_name}.txt") # f"{source_name}_{stats_str}.txt"
+            print(file)
+            with open(file, 'w') as f:
+                if len(path) == 4:
+                    t, x, y, z = path
+                    f.write(f"{t:.2f} {x:.2f} {y:.2f} {z:.2f}\n")
+                else:
+                    for t, x, y, z in path:
+                        f.write(f"{t:.2f} {x:.2f} {y:.2f} {z:.2f}\n")
+
+
 
 
 

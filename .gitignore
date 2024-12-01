@@ -1,5 +1,7 @@
 # Ignore a specific directory
-/directory_name/
+/scenes/sounds/OLSA_dithered
+/scenes/sounds/OLSA_gen
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

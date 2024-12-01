@@ -46,54 +46,54 @@ def save_to_file(filename, points):
 # ----------------------------------------
 # ----------------------------------------
 
-
-radius = 1                # Radius of the circle
-num_rotations = 1
-rotangle = num_rotations * (2 * np.pi)
-points_per_rot = 200
-num_points = int(round(points_per_rot*(rotangle/2*np.pi), 0))          # Number of points along the circle
-duration = 20                # duration of one rotation
-height = 1.6
-lockOr = False 
-#orOffset = -90
-#saveStart = True
-#fileName = "test"
-
-
-# 0 rot in 20 s
-saveStart = True
-fileName = "0rot"
-rotStart = 0
-points_speech = generate_circle_points(rotStart, rotangle, radius, height, num_points, duration)
-save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p.txt", points_speech)
-if saveStart:
-    save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_p_start.txt", points_speech[0])
-
-# 0 rot in 20 s
-saveStart = True
-fileName = "90rot"
-rotStart = 90
-points = generate_circle_points((rotStart/180) * np.pi, rotangle, radius, height, num_points, duration)
-save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p.txt", points_speech)
-if saveStart:
-    save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_p_start.txt", points[0])
+if __name__ == "__main__" :
+    radius = 1                # Radius of the circle
+    num_rotations = 1
+    rotangle = num_rotations * (2 * np.pi)
+    points_per_rot = 200
+    num_points = int(round(points_per_rot*(rotangle/2*np.pi), 0))          # Number of points along the circle
+    duration = 20                # duration of one rotation
+    height = 1.6
+    lockOr = False 
+    #orOffset = -90
+    #saveStart = True
+    #fileName = "test"
 
 
-# 180 rot in 20 s
-saveStart = True
-fileName = "180rot"
-rotStart = 180
-points = generate_circle_points((rotStart/180) * np.pi, rotangle, radius, height, num_points, duration)
-save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p.txt", points)
-if saveStart:
-    save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_p_start.txt", points[0])
-
-
-if lockOr:
-    orientations = generate_orientations(rotStart, rotangle, num_points, duration)
-    save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_o.txt", orientations)
+    # 0 rot in 20 s
+    saveStart = True
+    fileName = "0rot"
+    rotStart = 0
+    points_speech = generate_circle_points(rotStart, rotangle, radius, height, num_points, duration)
+    save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p.txt", points_speech)
     if saveStart:
-        save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_o_start.txt", orientations[0])
+        save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_p_start.txt", points_speech[0])
+
+    # 0 rot in 20 s
+    saveStart = True
+    fileName = "90rot"
+    rotStart = 90
+    points = generate_circle_points((rotStart/180) * np.pi, rotangle, radius, height, num_points, duration)
+    save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p.txt", points_speech)
+    if saveStart:
+        save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_p_start.txt", points[0])
+
+
+    # 180 rot in 20 s
+    saveStart = True
+    fileName = "180rot"
+    rotStart = 180
+    points = generate_circle_points((rotStart/180) * np.pi, rotangle, radius, height, num_points, duration)
+    save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_p.txt", points)
+    if saveStart:
+        save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_p_start.txt", points[0])
+
+
+    if lockOr:
+        orientations = generate_orientations(rotStart, rotangle, num_points, duration)
+        save_to_file(f"./scenes/paths/{fileName}_{num_rotations}_{duration}_o.txt", orientations)
+        if saveStart:
+            save_to_file(f"./scenes/paths/{rotStart}_{num_rotations}_{duration}_o_start.txt", orientations[0])
 
 
 

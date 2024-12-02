@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import os 
+from scipy import signal
+import matplotlib.pyplot as plt
 
 class PathGenerator():
     def __init__(self, dur=10, point_per_rot=200, height=1.8):
@@ -43,7 +45,8 @@ class PathGenerator():
                     stats = [start_angle, radius, rotation_angle, angle_range, osci_type, freq]
                     entry = {'name':name, 'path':path, 'type':type, 'stats':stats}
                     self.sources.loc[len(self.sources)+1] = entry
-
+            case _:
+                print("Error: Determine type of source")
 
     def genStaticCoords(self, start_angle, radius):
         x_coords = radius * np.cos(start_angle)
@@ -66,6 +69,7 @@ class PathGenerator():
         return points
 
     def genOscillatingCoords(self, start_angle, radius, rotation_angle, angle_range, osci_type, freq):
+        self.checkNyquist(rotation_angle, freq)
         match osci_type:
             case "sin":
                 num_points = int(self.pprot * (rotation_angle / 360))
@@ -74,16 +78,28 @@ class PathGenerator():
                 oscillation = (angle_range/2) * np.sin(2 * np.pi * freq * times)
                 angles = np.radians(start_angle) + np.radians(oscillation) + \
                          np.linspace(0, np.radians(rotation_angle), num_points + 1)
-                x_coords = radius * np.cos(angles)
-                y_coords = radius * np.sin(angles)
+            case "lin":
+                num_points = int(self.pprot * (rotation_angle / 360))
                 time_interval = self.duration / self.pprot
-                points = []
-                for i in range(num_points+1):
-                    t = i * time_interval
-                    x, y = x_coords[i], y_coords[i]
-                    z = self.height  # circle on xy plane only
-                    points.append((t, x, y, z))
-                return points
+                times = np.linspace(0, self.duration, num_points + 1)
+                oscillation = (angle_range/2) * signal.sawtooth(2 * np.pi * freq * times, 0.5)
+                angles = np.radians(start_angle) + np.radians(oscillation) + \
+                         np.linspace(0, np.radians(rotation_angle), num_points + 1)
+            case _ :
+                print("Error: Check you osci type")
+        
+        plt.plot(oscillation)
+        plt.show()
+        x_coords = radius * np.cos(angles)
+        y_coords = radius * np.sin(angles)
+        time_interval = self.duration / self.pprot
+        points = []
+        for i in range(num_points+1):
+            t = i * time_interval
+            x, y = x_coords[i], y_coords[i]
+            z = self.height  # circle on xy plane only
+            points.append((t, x, y, z))
+        return points
 
     def save(self, name, root="./scenes/paths"):
         scene_folder = os.path.join(root, name)
@@ -104,7 +120,13 @@ class PathGenerator():
                     for t, x, y, z in path:
                         f.write(f"{t:.2f} {x:.2f} {y:.2f} {z:.2f}\n")
 
-
+    def checkNyquist(self, rotation_angle, freq):
+        num_rot = (rotation_angle/360)
+        self.fs =  (round(self.pprot * num_rot)) / self.duration
+        if freq >= (self.fs/2):
+            raise ValueError(f"Oscillation freq {freq}>= Nyquist of {self.fs/2}")
+        else:
+            pass
 
 
 

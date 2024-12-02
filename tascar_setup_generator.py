@@ -22,7 +22,7 @@ import pathGenerator as pg
 ###############################################################
 
 
-Scene = pg.PathGenerator(dur=10, point_per_rot=200, height=1.8)
+Scene = pg.PathGenerator(dur=10, point_per_rot=300, height=1.8)
 
 name = "speaker"
 type = "static"
@@ -38,15 +38,14 @@ rotation_angle = 360
 radius = 1
 Scene.addSource(name, type, start_angle, radius, rotation_angle)
 
-
 name = "noise_osci"
 type = "osci"
 start_angle = 0
 radius = 1
 rotation_angle = 360
 angle_range = 60        # +- 30°
-osci_type = "sin"       # "cos", "lin", ...
-freq = 3
+osci_type = "lin"       # "cos", "lin", ...
+freq = 5
 Scene.addSource(name, type, start_angle, radius, rotation_angle, angle_range, osci_type, freq)
 
 print(Scene.sources.head())

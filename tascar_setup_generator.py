@@ -14,7 +14,7 @@ import pathGenerator as pg
 # source file (?)
 # > file name 
 
-# other aspect ----------
+# other aspect -----------
 # rotation ortientation
 # num points per rotation
 
@@ -52,39 +52,5 @@ print(Scene.sources.head())
 
 scene_name = "S0NrotNosci"
 Scene.save(scene_name)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # scene 1
-# start_angle = 0
-# rotation_angle = 360
-# radius = 1
-# duration = 10
-# path1 = GEN.genRotPath(start_angle, rotation_angle, radius, duration)
-
-# # scene 2
-# angle = 0
-# duration = 10
-# path2 = GEN.genStaticPath(angle, duration)
-
-# # scene 3
-# start_angle = 0
-# range = 60  # +- 30°
-# osci_type = "sin"       # "cos", "lin", ...
-# freq = 2
-# duration = 10
-# path3 = GEN.genOsciPath(start_angle, range, osci_type, rotation_angle, freq, duration)
 
 

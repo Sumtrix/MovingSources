@@ -4,6 +4,7 @@ import os
 from scipy import signal
 import matplotlib.pyplot as plt
 
+
 class PathGenerator():
     def __init__(self, dur=10, point_per_rot=200, height=1.8):
         self.duration = dur
@@ -127,60 +128,3 @@ class PathGenerator():
             raise ValueError(f"Oscillation freq {freq}>= Nyquist of {self.fs/2}")
         else:
             pass
-
-
-
-
-
-
-
-    # def gen_circ_path(self):
-    #     num_points = int(round(self.pprot*(self.rotation_angle/2*np.pi), 0))
-    #     angles = np.linspace(self.start_angle, self.start_angle + self.rotation_angle, num_points+1, endpoint=False)
-    #     x_coords = self.radius * np.cos(angles)
-    #     y_coords = self.radius * np.sin(angles)
-    #     time_interval = self.duration / self.pprot
-    #     points = []
-    #     for i in range(num_points+1):
-    #         t = i * time_interval
-    #         x, y = x_coords[i], y_coords[i]
-    #         z = self.height  # circle on xy plane only
-    #         points.append((t, x, y, z))
-    #     return points
-
-
-    # def save_to_file(self, filename, points):
-    #     with open(filename, 'w') as f:
-    #         print(len(points))
-    #         if len(points) == 4:
-    #             t, x, y, z = points
-    #             f.write(f"{t:.2f} {x:.2f} {y:.2f} {z:.2f}\n")
-    #         else:
-    #             for t, x, y, z in points:
-    #                 f.write(f"{t:.2f} {x:.2f} {y:.2f} {z:.2f}\n")
-    #     print(f"Data saved to {filename}")
-
-
-    # def genRotPath(self, start_angle, rotation_angle, radius):
-    #     self.type = "rot"
-    #     self.start_angle = start_angle
-    #     self.radius = radius
-    #     self.rotation_angle = rotation_angle
-    #     self.filename = f"{self.type}_{self.start_angle}_{self.rotation_angle}_{self.duration}_{self.pprot}.wav"
-    #     self.path = self.gen_circ_path()
-
-
-    # def genStaticPath(self, start_angle):
-    #     self.type = "static"
-    #     self.start_angle = start_angle
-    #     self.filename = f"{self.type}_{self.start_angle}_{self.rotation_angle}_{self.duration}_{self.pprot}.wav"
-
-
-    # def genOsciPath(self, start_angle, range, osci_type, freq):
-    #     self.type = "osci"
-    #     self.start_angle = start_angle
-    #     self.range = range
-    #     self.osci_type = osci_type
-    #     self.freq = freq
-    #     self.filename = f"{self.type}_{self.start_angle}_{self.range}_{self.osci_type}_{self.freq}_{self.duration}_{self.pprot}.wav"
-

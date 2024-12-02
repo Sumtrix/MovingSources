@@ -21,6 +21,9 @@ import pathGenerator as pg
 ###############################################################
 ###############################################################
 
+# -------------------------------------------------------------
+
+scene_name = "S0NrotNosci"
 
 Scene = pg.PathGenerator(dur=10, point_per_rot=300, height=1.8)
 
@@ -49,8 +52,136 @@ freq = 5
 Scene.addSource(name, type, start_angle, radius, rotation_angle, angle_range, osci_type, freq)
 
 print(Scene.sources.head())
+Scene.save(scene_name)
 
-scene_name = "S0NrotNosci"
+# -------------------------------------------------------------
+
+scene_name = "S0N0"
+
+Scene = pg.PathGenerator(dur=10, point_per_rot=200, height=1.8)
+radius = 1
+
+name = "speaker"
+type = "static"
+start_angle = 0
+Scene.addSource(name, type, start_angle, radius)
+
+name = "noise"
+type = "static"
+start_angle = 0
+Scene.addSource(name, type, start_angle, radius)
+
+print(Scene.sources.head())
+Scene.save(scene_name)
+
+# -------------------------------------------------------------
+
+scene_name = "S0N90"
+
+Scene = pg.PathGenerator(dur=10, point_per_rot=200, height=1.8)
+radius = 1
+
+name = "speaker"
+type = "static"
+start_angle = 0
+Scene.addSource(name, type, start_angle, radius)
+
+name = "noise"
+type = "static"
+start_angle = 90
+Scene.addSource(name, type, start_angle, radius)
+
+print(Scene.sources.head())
 Scene.save(scene_name)
 
 
+# -------------------------------------------------------------
+
+scene_name = "S0N0rot"
+
+Scene = pg.PathGenerator(dur=10, point_per_rot=200, height=1.8)
+radius = 1
+
+name = "speaker"
+type = "static"
+start_angle = 0
+Scene.addSource(name, type, start_angle, radius)
+
+name = "noise"
+type = "rot"
+start_angle = 0
+rotation_angle = 360
+Scene.addSource(name, type, start_angle, radius, rotation_angle)
+
+print(Scene.sources.head())
+Scene.save(scene_name)
+
+
+# -------------------------------------------------------------
+
+scene_name = "S0rotN180rot"
+
+Scene = pg.PathGenerator(dur=10, point_per_rot=200, height=1.8)
+radius = 1
+
+name = "speaker"
+type = "rot"
+start_angle = 0
+rotation_angle = 360
+Scene.addSource(name, type, start_angle, radius, rotation_angle)
+
+name = "noise"
+type = "rot"
+start_angle = 0
+rotation_angle = 360
+Scene.addSource(name, type, start_angle, radius, rotation_angle)
+
+name = "head"
+type = "osci"
+start_angle = 0
+rotation_angle = 360
+angle_range = 90
+osci_type = "sin2"
+freq = 0.5
+Scene.addHeadMovement(name, type, start_angle, rotation_angle, angle_range, osci_type, freq)
+
+print(Scene.sources.head())
+Scene.save(scene_name)
+
+
+
+
+
+# -------------------------------------------------------------
+# example of all ----------------------------------------------
+
+# scene_name = "S0NrotNosci"
+
+# Scene = pg.PathGenerator(dur=10, point_per_rot=300, height=1.8)
+
+# name = "speaker"
+# type = "static"
+# start_angle = 0
+# radius = 1
+# duration = 10
+# Scene.addSource(name, type, start_angle, radius)
+
+# name = "noise_rot"
+# type = "rot"
+# start_angle = 0
+# rotation_angle = 360
+# radius = 1
+# Scene.addSource(name, type, start_angle, radius, rotation_angle)
+
+# name = "noise_osci"
+# type = "osci"
+# start_angle = 0
+# radius = 1
+# rotation_angle = 360
+# angle_range = 60        # +- 30°
+# osci_type = "lin"       # "cos", "lin", ...
+# freq = 5
+# Scene.addSource(name, type, start_angle, radius, rotation_angle, angle_range, osci_type, freq)
+
+# print(Scene.sources.head())
+# Scene.save(scene_name)

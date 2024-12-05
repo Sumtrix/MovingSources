@@ -78,8 +78,8 @@ class PathGenerator():
 
 
     def genStaticCoords(self, start_angle, radius):
-        x_coords = radius * np.cos(start_angle)
-        y_coords = radius * np.sin(start_angle)
+        x_coords = radius * np.cos(np.radians(start_angle))
+        y_coords = radius * np.sin(np.radians(start_angle))
         return 0, x_coords, y_coords, self.height
 
 
@@ -139,9 +139,9 @@ class PathGenerator():
                 num_points = int(self.pprot * ((angle_range)/360) * freq * self.duration)
                 time_interval = self.duration / self.pprot
                 times = np.linspace(0, self.duration, num_points + 1)
-                oscillation = angle_range * np.sin(np.pi * freq * times)**2
-                angles = np.radians(start_angle) + np.radians(oscillation) + \
-                         np.linspace(0, np.radians(rotation_angle), num_points + 1)
+                oscillation = angle_range * np.sin(np.pi * freq * times)**2     #2 pi?
+                angles = start_angle + oscillation + \
+                         np.linspace(0, rotation_angle, num_points + 1)
             
             # case "sin":
             #     num_points = int(self.pprot * (rotation_angle / 360))
@@ -160,8 +160,8 @@ class PathGenerator():
             case _ :
                 print("Error: Check you osci type")
         
-        # plt.plot(angles)
-        # plt.show()
+        plt.plot(angles)
+        plt.show()
         time_interval = self.duration / self.pprot
         points = []
         for i in range(num_points+1):

@@ -119,30 +119,33 @@ Scene.save(scene_name)
 
 # -------------------------------------------------------------
 
-scene_name = "S0rotN180rot"
+scene_name = "S0N90N180Headrot90"
 
 Scene = pg.PathGenerator(dur=10, point_per_rot=200, height=1.8)
 radius = 1
 
 name = "speaker"
-type = "rot"
+type = "static"
 start_angle = 0
-rotation_angle = 360
-Scene.addSource(name, type, start_angle, radius, rotation_angle)
+Scene.addSource(name, type, start_angle, radius)
 
 name = "noise"
-type = "rot"
-start_angle = 0
-rotation_angle = 360
-Scene.addSource(name, type, start_angle, radius, rotation_angle)
+type = "static"
+start_angle = 90
+Scene.addSource(name, type, start_angle, radius)
+
+name = "special_noise"
+type = "static"
+start_angle = 180
+Scene.addSource(name, type, start_angle, radius)
 
 name = "head"
 type = "osci"
 start_angle = 0
-rotation_angle = 360
+rotation_angle = 0
 angle_range = 90
 osci_type = "sin2"
-freq = 0.5
+freq = 4
 Scene.addHeadMovement(name, type, start_angle, rotation_angle, angle_range, osci_type, freq)
 
 print(Scene.sources.head())

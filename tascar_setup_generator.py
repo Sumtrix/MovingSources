@@ -136,7 +136,7 @@ Scene.addSource(name, type, start_angle, radius)
 
 name = "special_noise"
 type = "static"
-start_angle = 180
+start_angle = 270
 Scene.addSource(name, type, start_angle, radius)
 
 name = "head"
@@ -145,7 +145,7 @@ start_angle = 0
 rotation_angle = 0
 angle_range = 90
 osci_type = "sin2"
-freq = 4
+freq = 20
 Scene.addHeadMovement(name, type, start_angle, rotation_angle, angle_range, osci_type, freq)
 
 print(Scene.sources.head())

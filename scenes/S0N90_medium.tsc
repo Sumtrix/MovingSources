@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE session [
-    <!ENTITY coords_speech SYSTEM "/paths/S0N90N180Headrot90/speaker.txt">
-    <!ENTITY coords_noise SYSTEM "/paths/S0N90N180Headrot90/noise.txt">
-    <!ENTITY orient_head SYSTEM "/paths/S0N90N180Headrot90/head.txt">
-    <!ENTITY coords_sp_noise SYSTEM "/paths/S0N90N180Headrot90/special_noise.txt">
+    <!ENTITY coords_speech SYSTEM "/paths/S0N90_medium/speaker.txt">
+    <!ENTITY coords_noise SYSTEM "/paths/S0N90_medium/noise.txt">
 ]>
-<session name="S0NrotNosci" duration="10" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
+<session name="S0N90" duration="10" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
   <scene name="labscene" guiscale="15">
     
     <source name="speaker" color="#101017">
@@ -17,28 +15,17 @@
       <position> &coords_speech; </position>
     </source>
     
-    <source name="masker1" color="#101077">
+    <source name="masker" color="#101077">
       <sound name="noise">
         <plugins>
           <sndfile name="sounds/OLSA_gen/noise_example_1.wav" level="75"/>
         </plugins>
       </sound>
       <position> &coords_noise; </position>
-    </source>
-
-    <source name="masker2" color="#101077">
-      <sound name="special_noise">
-        <plugins>
-          <sndfile name="sounds/gen_white_noise.wav" level="75"/>
-        </plugins>
-      </sound>
-      <position> &coords_sp_noise; </position>
-    </source>
-
+      </source>
 
     <receiver name="out" type="ortf">
       <position>0 0 0 1.7</position>
-      <orientation> &orient_head; </orientation>
     </receiver>
   </scene>
   <connect src="render.labscene:out_l" dest="system:playback_1"/>

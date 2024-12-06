@@ -136,12 +136,11 @@ class PathGenerator():
             raise ValueError("Freq must be >0 otherwise use rotation source.")
         match osci_type:
             case "sin2":
-                num_points = int(self.pprot * ((angle_range)/360) * freq * self.duration)
-                time_interval = self.duration / self.pprot
+                num_points = int(self.pprot * ((angle_range*2)/360) * freq * self.duration)
+                #time_interval = self.duration / self.pprot
                 times = np.linspace(0, self.duration, num_points + 1)
                 oscillation = angle_range * np.sin(np.pi * freq * times)**2     #2 pi?
-                angles = start_angle + oscillation + \
-                         np.linspace(0, rotation_angle, num_points + 1)
+                angles = start_angle + oscillation + np.linspace(0, rotation_angle, num_points + 1)
             
             # case "sin":
             #     num_points = int(self.pprot * (rotation_angle / 360))
@@ -160,17 +159,16 @@ class PathGenerator():
             case _ :
                 print("Error: Check you osci type")
         
-        plt.plot(angles)
-        plt.show()
-        time_interval = self.duration / self.pprot
-        points = []
+        # plt.plot(times, angles)
+        # plt.show()
+        orientations = []
         for i in range(num_points+1):
-            t = i * time_interval
+            t = times[i]
             ry, rx = 0, 0
             rz = angles[i]
             # [t_1 Rz_1 Ry_1 Rx_1]
-            points.append((t, rz, ry, rx))
-        return points
+            orientations.append((t, rz, ry, rx))
+        return orientations
     
 
     def save(self, name, root="./scenes/paths"):
@@ -192,12 +190,29 @@ class PathGenerator():
                     for t, x, y, z in path:
                         f.write(f"{t:.2f} {x:.2f} {y:.2f} {z:.2f}\n")
 
-    def checkNyquist(self, angle_range, freq):
-        num_points = round(self.pprot * ((angle_range)/360) * freq * self.duration)
-        self.fs =  num_points / self.duration
-        print(self.fs/2)
-        print(freq)
-        if freq >= (self.fs/2):
-            raise ValueError(f"Oscillation freq {freq}>= Nyquist of {self.fs/2}")
+    # def checkNyquist(self, angle_range, freq):
+    #     self.fs = round((self.pprot * ((angle_range*2)/360) * freq))
+    #     print(f"myqist/Max frequency = {self.fs/2}")
+    #     print(freq)
+    #     if freq >= (self.fs/2):
+    #         raise ValueError(f"Oscillation freq {freq}>= Nyquist of {self.fs/2}")
+    #     else:
+    #         pass
+
+    
+    def checkNyquist(self,angle_range, freq):
+        effective_pprot = self.pprot * ((angle_range*2) / 360)
+        sampling_rate = freq * effective_pprot
+        nyquist_freq = sampling_rate / 2
+        max_freq = sampling_rate / (2 * effective_pprot)
+        min_pprot_needed = 2 * freq * 360 / (angle_range*2)
+
+        # Check for aliasing
+        if freq > nyquist_freq:
+            print("WARNING: Aliasing detected! Nyquist criterion is not met.")
+            print(f"Maximum frequency possible without aliasing: {nyquist_freq:.2f} Hz")
+            print(f"Minimum pprot needed to avoid aliasing: {min_pprot_needed:.2f}")
         else:
-            pass
+            print("No aliasing detected.")
+            print(f"Maximum frequency possible without aliasing: {nyquist_freq:.2f} Hz")
+            print(f"Minimum pprot needed to avoid aliasing: {min_pprot_needed:.2f}")

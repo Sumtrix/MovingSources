@@ -1,33 +1,29 @@
 import subprocess
 import os 
+import glob
+import time 
 
-def run_command(command):
-    try:
-        res = subprocess.run(command, shell=True, text=True)
-        return res
-    except subprocess.CalledProcessError as e:
-        print(e)
-
-tascar_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/tascar"
-out_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/rendered_audio_files"
-scene_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/scenes"
+tascar_dir = "D:/Program Files (86x)/tascar-0.233.2.0-bb38f5e-windows/tascar"
+scene_dir = "D:/Benutzer/Johannes/Desktop/Studium/Uni/Sem2/MovingSources/scenes"
 
 
-# command = f"""
-# cd {tascar_dir}
-# tascar_renderfile -o {out_dir}/S0N0.wav -s {scene_dir}/S0N0.tsc
-# """
+# file management
+files = glob.glob(os.path.join(scene_dir, "*.tsc"))
+file_names = [os.path.basename(file) for file in files]
+print("\nV V V V File that will be generated V V V V\n")
+[print(file_name) for file_name in file_names]
 
-command = """
-cd C:/Users/annik/OneDrive/Desktop/Projekt/tascar
-tascar_renderfile -o S0N0.wav C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/scenes/S0N0.tsc
-tascar_renderfile -o S0N90.wav C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/scenes/S0N90.tsc
-tascar_renderfile -o S0N0rot.wav C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/scenes/S0N0rot.tsc
-tascar_renderfile -o S0N90N180Headrot90.wav C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/scenes/S0N90N180Headrot90.tsc
-tascar_renderfile -o S0NrotNosci.wav C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/scenes/S0NrotNosci.tsc
 
-"""
-
-print(command)
-
-subprocess.run(command, shell=True, text=True)
+# run commands
+print("\nV V V V V V Command Output V V V VV V \n")
+os.chdir(tascar_dir)
+for file_name in file_names:
+    command = [
+        "tascar_renderfile",
+        "-o", 
+        f" {file_name}.wav ",
+        f"{scene_dir}/{file_name}"
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+    print("STDOUT:", result.stdout)
+    print("STDERR:", result.stderr)

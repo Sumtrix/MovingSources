@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE session [
-    <!ENTITY coords_speech SYSTEM "/paths/S0N90/speaker.txt">
-    <!ENTITY coords_noise SYSTEM "/paths/S0N90/noise.txt">
+    <!ENTITY coords_speech SYSTEM "/paths/S0NrotNosci_medium/speaker.txt">
+    <!ENTITY coords_noise SYSTEM "/paths/S0NrotNosci_medium/noise_rot.txt">
+    <!ENTITY coords_noise SYSTEM "/paths/S0NrotNosci_medium/noise_osci.txt">
 ]>
-<session name="S0N90" duration="10" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
+<session name="S0NrotNosci" duration="10" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
   <scene name="labscene" guiscale="15">
     
     <source name="speaker" color="#101017">
@@ -15,14 +16,23 @@
       <position> &coords_speech; </position>
     </source>
     
-    <source name="masker" color="#101077">
+    <source name="masker1" color="#101077">
       <sound name="noise">
         <plugins>
           <sndfile name="sounds/OLSA_gen/noise_example_1.wav" level="75"/>
         </plugins>
       </sound>
       <position> &coords_noise; </position>
-      </source>
+    </source>
+
+    <source name="masker2" color="#101077">
+      <sound name="noise">
+        <plugins>
+          <sndfile name="sounds/gen_white_noise.wav" level="75"/>
+        </plugins>
+      </sound>
+      <position> &coords_noise; </position>
+    </source>
 
     <receiver name="out" type="ortf">
       <position>0 0 0 1.7</position>

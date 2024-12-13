@@ -11,7 +11,7 @@
     <source name="speaker" color="#101017">
       <sound name="olsa">
         <plugins>
-          <sndfile name="sounds/OLSA_gen/sent_example_1.wav" level="75"/>
+          <sndfile name="sounds/OLSA_gen/sent_example_1.wav" level="68"/>
         </plugins>
       </sound>
       <position> &coords_speech; </position>

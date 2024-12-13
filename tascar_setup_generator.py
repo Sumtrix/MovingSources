@@ -38,7 +38,6 @@ for i in range(len(durs)):
     type = "static"
     start_angle = 0
     radius = 1
-    duration = 10
     Scene.addSource(name, type, start_angle, radius)
 
     name = "noise_osci"
@@ -146,7 +145,7 @@ for i in range(len(durs)):
     rotation_angle = 0
     angle_range = 90
     osci_type = "sin2"
-    freq = 1
+    freq = 0.4
     Scene.addHeadMovement(name, type, start_angle, rotation_angle, angle_range, osci_type, freq)
 
     print(Scene.sources.head())

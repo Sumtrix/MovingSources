@@ -103,28 +103,25 @@ class PathGenerator():
             case "sin":
                 #num_points = int(self.pprot * (rotation_angle / 360))
                 num_points = int(self.pprot * ((angle_range)/360) * freq * self.duration)
-                time_interval = self.duration / self.pprot
                 times = np.linspace(0, self.duration, num_points + 1)
                 oscillation = (angle_range/2) * np.sin(2 * np.pi * freq * times)
                 angles = np.radians(start_angle) + np.radians(oscillation) + np.linspace(0, np.radians(rotation_angle), num_points + 1)
             case "lin":
                 #num_points = int(self.pprot * (rotation_angle / 360))
                 num_points = int(self.pprot * ((angle_range)/360) * freq * self.duration)
-                time_interval = self.duration / self.pprot
                 times = np.linspace(0, self.duration, num_points + 1)
-                oscillation = (angle_range/2) * signal.sawtooth(2 * np.pi * freq * times, 0.5)
+                oscillation = (angle_range/2) * signal.sawtooth(2 * np.pi * freq * (times/self.fs), 0.5)
                 angles = np.radians(start_angle) + np.radians(oscillation) + np.linspace(0, np.radians(rotation_angle), num_points + 1)
             case _ :
                 print("Error: Check you osci type")
         
-        # plt.plot(oscillation)
-        # plt.show()
         x_coords = radius * np.cos(angles)
         y_coords = radius * np.sin(angles)
-        time_interval = self.duration / self.pprot
+        #plt.plot(angles)
+        #plt.show()
         points = []
         for i in range(num_points+1):
-            t = i * time_interval
+            t = times[i]
             x, y = x_coords[i], y_coords[i]
             z = self.height  # circle on xy plane only
             points.append((t, x, y, z))

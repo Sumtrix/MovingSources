@@ -30,7 +30,7 @@ for i in range(len(durs)):
     dur = durs[i]
     durname = durnames[i]
 
-    scene_name = f"S0NrotNosci_{durname}"
+    scene_name = f"S0N0osci60_{durname}"
 
     Scene = pg.PathGenerator(dur=dur, point_per_rot=360, height=1.8)
 
@@ -41,21 +41,14 @@ for i in range(len(durs)):
     duration = 10
     Scene.addSource(name, type, start_angle, radius)
 
-    name = "noise_rot"
-    type = "rot"
-    start_angle = 0
-    rotation_angle = 360
-    radius = 1
-    Scene.addSource(name, type, start_angle, radius, rotation_angle)
-
     name = "noise_osci"
     type = "osci"
     start_angle = 0
     radius = 1
-    rotation_angle = 360
-    angle_range = 60        # +- 30°
-    osci_type = "lin"       # "cos", "lin", ...
-    freq = 5
+    rotation_angle = 0
+    angle_range = 120        # +- 30°
+    osci_type = "sin"       # "cos", "lin", ...
+    freq = 1
     Scene.addSource(name, type, start_angle, radius, rotation_angle, angle_range, osci_type, freq)
 
     print(Scene.sources.head())

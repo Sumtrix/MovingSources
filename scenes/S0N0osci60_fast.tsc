@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE session [
-    <!ENTITY coords_speech SYSTEM "/paths/S0NrotNosci_fast/speaker.txt">
-    <!ENTITY coords_noise SYSTEM "/paths/S0NrotNosci_fast/noise_rot.txt">
-    <!ENTITY coords_noise SYSTEM "/paths/S0NrotNosci_fast/noise_osci.txt">
+    <!ENTITY coords_speech SYSTEM "/paths/S0N0osci60_fast/speaker.txt">
+    <!ENTITY coords_noise SYSTEM "/paths/S0N0osci60_fast/noise_osci.txt">
 ]>
-<session name="S0NrotNosci" duration="5" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
+<session name="S0N0osci60_fast" duration="5" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
   <scene name="labscene" guiscale="15">
     
     <source name="speaker" color="#101017">
@@ -20,15 +19,6 @@
       <sound name="noise">
         <plugins>
           <sndfile name="sounds/OLSA_gen/noise_example_1.wav" level="75"/>
-        </plugins>
-      </sound>
-      <position> &coords_noise; </position>
-    </source>
-
-    <source name="masker2" color="#101077">
-      <sound name="noise">
-        <plugins>
-          <sndfile name="sounds/gen_white_noise.wav" level="75"/>
         </plugins>
       </sound>
       <position> &coords_noise; </position>

@@ -101,19 +101,19 @@ class PathGenerator():
         self.checkNyquist(angle_range, freq)
         match osci_type:
             case "sin":
-                num_points = int(self.pprot * (rotation_angle / 360))
+                #num_points = int(self.pprot * (rotation_angle / 360))
+                num_points = int(self.pprot * ((angle_range)/360) * freq * self.duration)
                 time_interval = self.duration / self.pprot
                 times = np.linspace(0, self.duration, num_points + 1)
                 oscillation = (angle_range/2) * np.sin(2 * np.pi * freq * times)
-                angles = np.radians(start_angle) + np.radians(oscillation) + \
-                         np.linspace(0, np.radians(rotation_angle), num_points + 1)
+                angles = np.radians(start_angle) + np.radians(oscillation) + np.linspace(0, np.radians(rotation_angle), num_points + 1)
             case "lin":
-                num_points = int(self.pprot * (rotation_angle / 360))
+                #num_points = int(self.pprot * (rotation_angle / 360))
+                num_points = int(self.pprot * ((angle_range)/360) * freq * self.duration)
                 time_interval = self.duration / self.pprot
                 times = np.linspace(0, self.duration, num_points + 1)
                 oscillation = (angle_range/2) * signal.sawtooth(2 * np.pi * freq * times, 0.5)
-                angles = np.radians(start_angle) + np.radians(oscillation) + \
-                         np.linspace(0, np.radians(rotation_angle), num_points + 1)
+                angles = np.radians(start_angle) + np.radians(oscillation) + np.linspace(0, np.radians(rotation_angle), num_points + 1)
             case _ :
                 print("Error: Check you osci type")
         

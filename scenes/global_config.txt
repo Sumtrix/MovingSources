@@ -1,0 +1,4 @@
+<!ENTITY medium "10">
+<!ENTITY fast "5">
+<!ENTITY level "75">
+<!ENTITY snr "-7">

@@ -1,21 +1,28 @@
 import subprocess
 import os 
+import glob
+import time 
 
-def run_command(command):
-    try:
-        subprocess.run(command, shell=True, text=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    except subprocess.CalledProcessError as e:
-        print(e)
+tascar_dir = "D:/Program Files (86x)/tascar-0.233.2.0-bb38f5e-windows/tascar"
+scene_dir = "D:/Benutzer/Johannes/Desktop/Studium/Uni/Sem2/MovingSources/scenes"
 
-#tascar_dir = "path"
-tascar_dir = "/Users/johannesrolfes/Desktop/StudiumHA/Uni/Sem2/Projekt/tascar"
-cd = f"cd {tascar_dir}"
-print(f"Running: {cd}")
-run_command(cd)
+# file management
+files = glob.glob(os.path.join(scene_dir, "*.tsc"))
+file_names = [os.path.basename(file) for file in files]
+print("\nV V V V File that will be generated V V V V\n")
+[print(file_name) for file_name in file_names]
 
-# render tascar files
-out_dir = "/Users/johannesrolfes/Desktop/StudiumHA/Uni/Sem2/Projekt/repo/MovingSources/rendered_audio_files"
-commands = [f"tascar_renderfile -o {out_dir}/S0N0.wav -s tascar_scene.tsc "]
-for command in commands:
-    print(f"Running: {command}")
-    run_command(command)
+
+# run commands
+print("\nV V V V V V Command Output V V V VV V \n")
+os.chdir(tascar_dir)
+for file_name in file_names:
+    command = [
+        "tascar_renderfile",
+        "-o", 
+        f" {file_name}.wav ",
+        f"{scene_dir}/{file_name}"
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+    print("STDOUT:", result.stdout)
+    print("STDERR:", result.stderr)

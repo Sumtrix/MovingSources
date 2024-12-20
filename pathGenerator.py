@@ -73,6 +73,11 @@ class PathGenerator():
                     stats = [start_angle, rotation_angle, angle_range, osci_type, freq]
                     entry = {'name':name, 'path':path, 'type':type, 'stats':stats}
                     self.sources.loc[len(self.sources)+1] = entry
+            case "rot":
+                path = self.genRotOrientation(start_angle,rotation_angle)
+                stats = [start_angle, rotation_angle, angle_range, osci_type, freq]
+                entry = {'name':name, 'path':path, 'type':type, 'stats':stats}
+                self.sources.loc[len(self.sources)+1] = entry
             case _:
                 print("Error: Determine type of source")
 
@@ -126,6 +131,20 @@ class PathGenerator():
             z = self.height  # circle on xy plane only
             points.append((t, x, y, z))
         return points
+    
+
+    def genRotOrientation(self, start_angle, rotation_angle):
+        num_points = int(self.pprot * ((rotation_angle)/360) * self.duration)
+        times = np.linspace(0, self.duration, num_points + 1)
+        angles = start_angle + np.linspace(0, rotation_angle, num_points + 1)
+        orientations = []
+        for i in range(num_points+1):
+            t = times[i]
+            ry, rx = 0, 0
+            rz = angles[i]
+            # [t_1 Rz_1 Ry_1 Rx_1]
+            orientations.append((t, rz, ry, rx))
+        return orientations
     
     def genOsciOrientation(self, start_angle, rotation_angle, angle_range, osci_type, freq):    
         self.checkNyquist(angle_range, freq)

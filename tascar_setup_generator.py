@@ -170,13 +170,10 @@ for i in range(len(durs)):
     Scene.addSource(name, type, start_angle, radius)
 
     name = "head"
-    type = "osci"
+    type = "rot"
     start_angle = 0
-    rotation_angle = 0
-    angle_range = 90
-    osci_type = "sin2"
-    freq = 0.2
-    Scene.addHeadMovement(name, type, start_angle, rotation_angle, angle_range, osci_type, freq)
+    rotation_angle = 360
+    Scene.addHeadMovement(name, type, start_angle, rotation_angle)
 
     print(Scene.sources.head())
     Scene.save(scene_name)

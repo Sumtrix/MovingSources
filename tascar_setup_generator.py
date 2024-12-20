@@ -119,7 +119,7 @@ for i in range(len(durs)):
 
     # -------------------------------------------------------------
 
-    scene_name = f"S0N90N180Headrot90_{durname}"
+    scene_name = f"S0N90N270Headrot90_{durname}"
 
     Scene = pg.PathGenerator(dur=dur, point_per_rot=360, height=1.8)
     radius = 1
@@ -145,7 +145,37 @@ for i in range(len(durs)):
     rotation_angle = 0
     angle_range = 90
     osci_type = "sin2"
-    freq = 0.4
+    freq = 0.2
+    Scene.addHeadMovement(name, type, start_angle, rotation_angle, angle_range, osci_type, freq)
+
+    print(Scene.sources.head())
+    Scene.save(scene_name)
+    
+    
+    # -------------------------------------------------------------
+
+    scene_name = f"S0N180Headrot360_{durname}"
+
+    Scene = pg.PathGenerator(dur=dur, point_per_rot=360, height=1.8)
+    radius = 1
+
+    name = "speaker"
+    type = "static"
+    start_angle = 0
+    Scene.addSource(name, type, start_angle, radius)
+
+    name = "noise"
+    type = "static"
+    start_angle = 180
+    Scene.addSource(name, type, start_angle, radius)
+
+    name = "head"
+    type = "osci"
+    start_angle = 0
+    rotation_angle = 0
+    angle_range = 90
+    osci_type = "sin2"
+    freq = 0.2
     Scene.addHeadMovement(name, type, start_angle, rotation_angle, angle_range, osci_type, freq)
 
     print(Scene.sources.head())

@@ -2,6 +2,8 @@ import subprocess
 import os 
 import glob
 import time 
+import soundfile as sf
+import numpy as np
 
 #tascar_dir = "D:/Program Files (86x)/tascar-0.233.2.0-bb38f5e-windows/tascar"
 #scene_dir = "D:/Benutzer/Johannes/Desktop/Studium/Uni/Sem2/MovingSources/scenes"
@@ -16,6 +18,9 @@ file_names = [os.path.basename(file) for file in files]
 print("\nV V V V File that will be generated V V V V\n")
 [print(file_name) for file_name in file_names]
 
+sf.write("input_medium.wav", np.zeros((10*44100, 3)), 44100)
+sf.write("input_fast.wav", np.zeros((5*44100, 3)), 44100)
+root = "C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/"
 
 # run commands
 print("\nV V V V V V Command Output V V V VV V \n")
@@ -32,6 +37,7 @@ for file_name in file_names:
         "-o",
         f" {file_name}.wav" 
         ]
+    
     result = subprocess.run(command, capture_output=True, text=True)
     print("STDOUT:", result.stdout)
     print("STDERR:", result.stderr)

@@ -20,13 +20,37 @@ print("\nV V V V File that will be generated V V V V\n")
 # run commands
 print("\nV V V V V V Command Output V V V VV V \n")
 os.chdir(tascar_dir)
-for file_name in file_names:
+for file_name in file_names:    
     command = [
         "tascar_renderfile",
-        "-o", 
-        f" {file_name}.wav ",
-        f"{scene_dir}/{file_name}"
-    ]
+        "-i ",
+        f"{scene_dir}/{file_name}",
+        "--srate=48000",
+        "--starttime=0",
+        "--duration=10",
+        "--fragsize=128", 
+        "-o",
+        f" {file_name}.wav" 
+        ]
     result = subprocess.run(command, capture_output=True, text=True)
     print("STDOUT:", result.stdout)
     print("STDERR:", result.stderr)
+
+
+
+# command = [
+#     "tascar_renderfile",
+#     "-o", 
+#     f" {file_name}.wav ",
+#     f"{scene_dir}/{file_name}"
+# ]
+
+
+
+
+"""
+training files 
+unabhängig von wie schnell, wie lang eine situation laufen lassen? Mehrere volle rotationen? 
+
+
+"""

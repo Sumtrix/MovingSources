@@ -1,0 +1,2 @@
+targe_level = 68
+noise_level = 75

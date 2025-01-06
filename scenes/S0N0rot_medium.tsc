@@ -24,10 +24,10 @@
       <position> &coords_noise; </position>
       </source>
 
-    <receiver name="out" type="ortf">
+    <receiver name="out_hrtf" type="hrtf">
       <position>0 0 0 1.7</position>
     </receiver>
   </scene>
-  <connect src="render.labscene:out_l" dest="system:playback_1"/>
-  <connect src="render.labscene:out_r" dest="system:playback_2"/>
+  <connect src="render.labscene:out_hrtf_[lr]" dest="system:playback_[12]"/>
+
 </session>

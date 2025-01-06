@@ -4,9 +4,41 @@ import glob
 import os
 import json
 
-resutls_path = "/Users/johannesrolfes/Desktop/StudiumHA/Uni/Sem2/Projekt/MovingSourcesOutputs_13_12"
-files = glob.glob(os.path.join(resutls_path, "*.json"))
+results_path = "le_modell_results\-3 dB SNR"
+files_fast = sorted(glob.glob(os.path.join(results_path, "*fast*.npy")))
+files_medium = sorted(glob.glob(os.path.join(results_path, "*medium*.npy")))
+files = [files_fast, files_medium]
+set_names = ["fast", "medium"]
 
+fig, ax = plt.subplots(2, 1)
+
+
+for idx, dataset in enumerate(files):
+    set_name = set_names[idx]
+    legend = []
+    for file in dataset:
+        print(file)
+        data_list = np.load(file)  # Load data from .npy file
+        scene = os.path.basename(file)
+        num_values = len(data_list)
+        
+        ax[idx].plot(data_list)
+        ax[idx].set_title(set_name)
+        legend.append(scene)
+    ax[idx].legend(legend)
+    
+        
+#ax_pol.legend(legend_vec)
+ax[0].set_ylim([0, 14])
+ax[0].grid(linestyle=':', alpha=0.5)
+ax[1].set_ylim([0, 14])
+ax[1].grid(linestyle=':', alpha=0.5)
+plt.show()
+
+
+
+# old based on json
+"""
 #fig_po, ax_pol = plt.subplots(subplot_kw={'projection': 'polar'})
 fig, ax = plt.subplots(2, 1)
 
@@ -39,3 +71,4 @@ ax[1].legend(legend_medium)
 ax[1].set_ylim([0,14])
 ax[1].grid(linestyle=':', alpha=0.5)
 plt.show()
+"""

@@ -24,7 +24,7 @@
       <position> &coords_noise; </position>
       </source>
       
-    <receiver name="out_hrtf" type="hrtf" caliblevel="115">
+    <receiver name="out_hrtf" type="hrtf">
       <position>0 0 0 1.7</position>
     </receiver>
   </scene>

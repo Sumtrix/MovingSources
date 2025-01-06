@@ -5,11 +5,11 @@ import time
 import soundfile as sf
 import numpy as np
 
-#tascar_dir = "D:/Program Files (86x)/tascar-0.233.2.0-bb38f5e-windows/tascar"
-#scene_dir = "D:/Benutzer/Johannes/Desktop/Studium/Uni/Sem2/MovingSources/scenes"
+tascar_dir = "D:/Program Files (86x)/tascar-0.233.2.0-bb38f5e-windows/tascar"
+scene_dir = "D:/Benutzer/Johannes/Desktop/Studium/Uni/Sem2/MovingSources/scenes"
 
-tascar_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/tascar"
-scene_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/scenes"
+# tascar_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/tascar"
+# scene_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/scenes"
 
 
 # file management
@@ -28,14 +28,12 @@ os.chdir(tascar_dir)
 for file_name in file_names:    
     command = [
         "tascar_renderfile",
-        "-i ",
-        f"{scene_dir}/{file_name}",
-        "--srate=48000",
+        "--srate=44100",
         "--starttime=0",
-        "--duration=10",
         "--fragsize=128", 
         "-o",
-        f" {file_name}.wav" 
+        f" {file_name[:-4]}.wav", 
+        f"{scene_dir}/{file_name}"
         ]
     
     result = subprocess.run(command, capture_output=True, text=True)
@@ -44,19 +42,10 @@ for file_name in file_names:
 
 
 
-# command = [
-#     "tascar_renderfile",
-#     "-o", 
-#     f" {file_name}.wav ",
-#     f"{scene_dir}/{file_name}"
-# ]
-
 
 
 
 """
 training files 
 unabhängig von wie schnell, wie lang eine situation laufen lassen? Mehrere volle rotationen? 
-
-
 """

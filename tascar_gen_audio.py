@@ -5,11 +5,11 @@ import time
 import soundfile as sf
 import numpy as np
 
-tascar_dir = "D:/Program Files (86x)/tascar-0.233.2.0-bb38f5e-windows/tascar"
-scene_dir = "D:/Benutzer/Johannes/Desktop/Studium/Uni/Sem2/MovingSources/scenes"
+# tascar_dir = "D:/Program Files (86x)/tascar-0.233.2.0-bb38f5e-windows/tascar"
+# scene_dir = "D:/Benutzer/Johannes/Desktop/Studium/Uni/Sem2/MovingSources/scenes"
 
-# tascar_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/tascar"
-# scene_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/scenes"
+tascar_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/tascar"
+scene_dir = "C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/scenes"
 
 
 # file management

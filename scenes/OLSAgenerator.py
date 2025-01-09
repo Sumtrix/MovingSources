@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 olsa_dir = os.path.relpath("./scenes/sounds/OLSA_dithered")
 #pause_dur = 3 #Duration of pause 
 #num_sent = 3 #Number of sentences 
-lens_file = 10      # s
+lens_file = 20      # s
 files = os.listdir(olsa_dir)
 sent_out_file_name = "sent_example_1"
 noise_out_file_name = "noise_example_1"

@@ -4,7 +4,7 @@ import glob
 import os
 import json
 
-results_path = "le_modell_results\-3 dB SNR"
+results_path = "./le_modell_results/-3 dB SNR"
 files_fast = sorted(glob.glob(os.path.join(results_path, "*fast*.npy")))
 files_medium = sorted(glob.glob(os.path.join(results_path, "*medium*.npy")))
 files = [files_fast, files_medium]

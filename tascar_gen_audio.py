@@ -18,8 +18,6 @@ file_names = [os.path.basename(file) for file in files]
 print("\nV V V V File that will be generated V V V V\n")
 [print(file_name) for file_name in file_names]
 
-sf.write("input_medium.wav", np.zeros((10*44100, 3)), 44100)
-sf.write("input_fast.wav", np.zeros((5*44100, 3)), 44100)
 root = "C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/"
 
 # run commands

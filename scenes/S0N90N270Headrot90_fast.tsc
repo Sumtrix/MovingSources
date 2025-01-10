@@ -11,7 +11,7 @@
     <source name="speaker" color="#101017">
       <sound name="olsa">
         <plugins>
-          <sndfile name="sounds/OLSA_gen/sent_example_1.wav" level="68"/>
+          <sndfile name="sounds/OLSA_gen/sent_example_1.wav" level="69"/>
         </plugins>
       </sound>
       <position> &coords_speech; </position>
@@ -29,7 +29,7 @@
     <source name="masker2" color="#101077">
       <sound name="special_noise">
         <plugins>
-          <sndfile name="sounds/gen_white_noise.wav" level="72"/>
+          <sndfile name="sounds/gen_white_noise.wav" level="69"/>
         </plugins>
       </sound>
       <position> &coords_sp_noise; </position>

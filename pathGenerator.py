@@ -93,7 +93,7 @@ class PathGenerator():
         angles = np.radians(np.linspace(start_angle, start_angle + rotation_angle, num_points+1, endpoint=False))
         x_coords = radius * np.cos(angles)
         y_coords = radius * np.sin(angles)
-        time_interval = self.duration / self.pprot
+        time_interval = self.duration / num_points
         points = []
         for i in range(num_points+1):
             t = i * time_interval

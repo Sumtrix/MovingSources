@@ -20,9 +20,16 @@ for run_idx, run in enumerate(subj_runs):
     meas_files = os.listdir(run)
     for meas_file in meas_files:
         meas_name = os.path.basename(meas_file)
-        LE_data = np.load(meas_file)
+        # LE_data = np.load(meas_file)
+        
+        with np.load(meas_file) as data:
+            print(data)
         
         ax[run_idx].plot()
+        
+        
+        
+plt.show()
 
 
 

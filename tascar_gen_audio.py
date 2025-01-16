@@ -21,7 +21,7 @@ print("\nV V V V File that will be generated V V V V\n")
 root = "C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/"
 
 # run commands
-print("\nV V V V V V Command Output V V V VV V \n")
+print("\nV V V V V V Command Output V V V V V V \n")
 os.chdir(tascar_dir)
 for file_name in file_names:    
     command = [

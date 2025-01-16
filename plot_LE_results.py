@@ -5,24 +5,28 @@ import os
 
 # ---------------------------------
 # ---------------------------------
-# 15.1.2025 - All measurements are plottet. Figure per Person, subplot per run
 
+# participant
 #subj_name = "JR"
 subj_name = "LE_Modell"
 #subj_names = ["JR", "LE_Modell"]
 
+# keyword/s for only plotting some scenes
+plot_keyword = ["S0N0_", "S0N90_", "S0N0rot"]
+plot_keyword = ["headrot360"]
+
+# smoothing
+window_size = 8        # no smoothing if 0
+
+one_plot = False
 # ---------------------------------
 # ---------------------------------
 
 def moving_average(data, window_size):
-    if window_size < 1:
-        print(("Window size must be at least 1."))
-        return data
-        #raise ValueError("Window size must be at least 1.")
     if window_size > len(data):
-        print("Window size must not be greater than the length of the data.")
+        raise ValueError("Wiwndow size must not be greater than the length of the data.")
+    if window_size < 1:
         return data
-        #raise ValueError("Wiwndow size must not be greater than the length of the data.")
     else:
         return np.convolve(data, np.ones(window_size) / window_size, mode='valid')
 
@@ -32,31 +36,41 @@ if type(subj_name)==str:
     subj_names = [subj_name]
 for subj_name in subj_names:
     subj_runs = sorted(glob.glob(os.path.join(root_results, subj_name, f"*{subj_name}*")))
-    fig, axes = plt.subplots(3, 2)    # training, -3 medium, -7 medium, -3 fast, -7 fast , 1 empty
+    
+    if one_plot:
+        fig, ax = fig, axes = plt.subplots(1, 1)
+    else:
+        fig, axes = plt.subplots(3, 2)    # training, -3 medium, -7 medium, -3 fast, -7 fast , 1 empty
+        
     for run_idx, run in enumerate(subj_runs):
-        row, col = divmod(run_idx, 2) 
-        ax = axes[row, col]
+        if one_plot:
+            ax = axes
+        else:
+            row, col = divmod(run_idx, 2) 
+            ax = axes[row, col]
         
         scenes = os.listdir(run)
+        if plot_keyword:
+            #scenes = [file for file in scenes if any(kw.lower() in file.lower() for kw in plot_keyword)]
+            scenes = list(filter(lambda file: any(kw.lower() in file.lower() for kw in plot_keyword), scenes))
+
+
         run_name = os.path.basename(run)
         run_legend = []
         for scene in scenes:
             scene_name = os.path.basename(scene)
             run_legend.append(scene_name)
-            print("\n", os.path.join(run, scene), "\n")
+            #print("\n", os.path.join(run, scene), "\n")
             with np.load(os.path.join(run, scene)) as data:
-                print(data)
                 if "LE_Modell" in run_name:
                     meas = data["data"]
                 else:
                     meas = data["le"]
-                
-                # window_size = 10
-                # smoothed_data = moving_average(meas, window_size)
-                
-                ax.plot(meas)
+                smoothed_data = moving_average(meas, window_size)
+                ax.plot(smoothed_data)
                 ax.set_title(run_name)
                 ax.set_ylim([0, 14])
+                ax.grid(which="both", alpha=0.8, linestyle=':')
         ax.legend(run_legend)
     plt.show()
 

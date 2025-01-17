@@ -25,7 +25,7 @@
     </source>
     
     <receiver name="out_hrtf" type="hrtf" caliblevel="120">
-      <position>0 0 0 1.7</position>
+      <position>0 0 0 1.8</position>
     </receiver>
   </scene>
   <connect src="render.labscene:out_hrtf_[lr]" dest="system:playback_[12]"/>

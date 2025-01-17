@@ -26,11 +26,11 @@ os.chdir(tascar_dir)
 for file_name in file_names:    
     command = [
         "tascar_renderfile",
+        "-o",
+        f" {file_name[:-4]}.wav", 
         "--srate=44100",
         "--starttime=0",
         "--fragsize=128", 
-        "-o",
-        f" {file_name[:-4]}.wav", 
         f"{scene_dir}/{file_name}"
         ]
     

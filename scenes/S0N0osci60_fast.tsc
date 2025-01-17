@@ -9,7 +9,7 @@
     <source name="speaker" color="#101017">
       <sound name="olsa">
         <plugins>
-          <sndfile name="sounds/OLSA_gen/sent_example_1.wav" level="69"/>
+          <sndfile name="sounds/OLSA_gen/sent_example_1.wav" level="65"/>
         </plugins>
       </sound>
       <position> &coords_speech; </position>
@@ -24,7 +24,7 @@
       <position> &coords_noise; </position>
     </source>
     
-    <receiver name="out_hrtf" type="hrtf">
+    <receiver name="out_hrtf" type="hrtf" caliblevel="120">
       <position>0 0 0 1.7</position>
     </receiver>
   </scene>

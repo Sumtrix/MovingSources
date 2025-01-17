@@ -24,7 +24,7 @@ import pathGenerator as pg
 # -------------------------------------------------------------
 #durs = [10, 5]
 
-durs = [20, 10]
+durs = [30, 60]
 durnames = ["medium", "slow"]
 
 for i in range(len(durs)):
@@ -112,7 +112,7 @@ for i in range(len(durs)):
     name = "noise"
     type = "rot"
     start_angle = 0
-    rotation_angle = 720
+    rotation_angle = 1080
     Scene.addSource(name, type, start_angle, radius, rotation_angle)
 
     print(Scene.sources.head())
@@ -174,7 +174,7 @@ for i in range(len(durs)):
     name = "head"
     type = "rot"
     start_angle = 0
-    rotation_angle = 720
+    rotation_angle = 1080
     Scene.addHeadMovement(name, type, start_angle, rotation_angle)
 
     print(Scene.sources.head())

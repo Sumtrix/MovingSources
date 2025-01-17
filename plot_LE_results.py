@@ -7,16 +7,17 @@ import os
 # ---------------------------------
 
 # participant
-#subj_name = "JR"
-subj_name = "LE_Modell"
+subj_name = "JR"
+#subj_name = "LE_Modell"
 #subj_names = ["JR", "LE_Modell"]
 
 # keyword/s for only plotting some scenes
-plot_keyword = ["S0N0_", "S0N90_", "S0N0rot"]
-plot_keyword = ["headrot360"]
+#plot_keyword = ["S0N0_", "S0N90_", "S0N0rot"]
+#plot_keyword = ["headrot360"]
+plot_keyword = None
 
 # smoothing
-window_size = 8        # no smoothing if 0
+window_size = 40        # no smoothing if 0
 
 one_plot = False
 # ---------------------------------
@@ -24,7 +25,8 @@ one_plot = False
 
 def moving_average(data, window_size):
     if window_size > len(data):
-        raise ValueError("Wiwndow size must not be greater than the length of the data.")
+        print("Wiwndow size must not be greater than the length of the data.")
+        return -1 
     if window_size < 1:
         return data
     else:
@@ -53,24 +55,25 @@ for subj_name in subj_names:
         if plot_keyword:
             #scenes = [file for file in scenes if any(kw.lower() in file.lower() for kw in plot_keyword)]
             scenes = list(filter(lambda file: any(kw.lower() in file.lower() for kw in plot_keyword), scenes))
-
+        scenes = sorted(scenes)
 
         run_name = os.path.basename(run)
         run_legend = []
         for scene in scenes:
             scene_name = os.path.basename(scene)
             run_legend.append(scene_name)
-            #print("\n", os.path.join(run, scene), "\n")
             with np.load(os.path.join(run, scene)) as data:
                 if "LE_Modell" in run_name:
                     meas = data["data"]
                 else:
                     meas = data["le"]
                 smoothed_data = moving_average(meas, window_size)
+                if not isinstance(smoothed_data, np.ndarray): continue
                 ax.plot(smoothed_data)
                 ax.set_title(run_name)
                 ax.set_ylim([0, 14])
                 ax.grid(which="both", alpha=0.8, linestyle=':')
+            print("\n", os.path.join(run, scene), "\n", len(meas))
         ax.legend(run_legend)
     plt.show()
 

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE session [
+    <!ENTITY coords_speech SYSTEM "/paths/S0N90N270Headrot90_medium/speaker.txt">
+    <!ENTITY coords_noise SYSTEM "/paths/S0N90N270Headrot90_medium/noise.txt">
+    <!ENTITY orient_head SYSTEM "/paths/S0N90N270Headrot90_medium/head.txt">
+    <!ENTITY coords_sp_noise SYSTEM "/paths/S0N90N270Headrot90_medium/special_noise.txt">
+]>
+<session name="S0N90N270Headrot90_medium" duration="30" license="CC BY-SA 3.0">
+  <scene name="labscene" guiscale="15">
+    
+    <source name="speaker" color="#101017">
+      <sound name="olsa">
+        <plugins>
+          <sndfile name="sounds/OLSA_gen/sent_example_1.wav" level="68"/>
+        </plugins>
+      </sound>
+      <position> &coords_speech; </position>
+    </source>
+    
+    <source name="masker1" color="#101077">
+      <sound name="noise">
+        <plugins>
+          <sndfile name="sounds/OLSA_gen/noise_example_1.wav" level="75"/>
+        </plugins>
+      </sound>
+      <position> &coords_noise; </position>
+    </source>
+
+    <source name="masker2" color="#101077">
+      <sound name="special_noise">
+        <plugins>
+          <sndfile name="sounds/gen_white_noise.wav" level="69"/>
+        </plugins>
+      </sound>
+      <position> &coords_sp_noise; </position>
+    </source>
+
+
+    <receiver name="out_hrtf" type="hrtf" caliblevel="120">
+      <position>0 0 0 1.7</position>
+      <orientation> &orient_head; </orientation>
+    </receiver>
+  </scene>
+  <connect src="render.labscene:out_hrtf_[lr]" dest="system:playback_[12]"/>
+</session>

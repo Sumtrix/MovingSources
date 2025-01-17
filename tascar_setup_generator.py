@@ -25,7 +25,7 @@ import pathGenerator as pg
 #durs = [10, 5]
 
 durs = [20, 10]
-durnames = ["medium", "fast"]
+durnames = ["medium", "slow"]
 
 for i in range(len(durs)):
 

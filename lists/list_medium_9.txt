@@ -1,0 +1,12 @@
+./audio/S0N90N270Headrot90_medium_-7.wav
+./audio/S0N0rot_medium_-7.wav
+./audio/S0N180Headrot360_medium_-10.wav
+./audio/S0N180Headrot360_medium_-7.wav
+./audio/S0N0osci60_medium_-7.wav
+./audio/S0N90N270Headrot90_medium_-10.wav
+./audio/S0N90_medium_-10.wav
+./audio/S0N90_medium_-7.wav
+./audio/S0N0rot_medium_-10.wav
+./audio/S0N0_medium_-7.wav
+./audio/S0N0_medium_-10.wav
+./audio/S0N0osci60_medium_-10.wav

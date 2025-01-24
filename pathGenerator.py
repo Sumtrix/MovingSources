@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 class PathGenerator():
-    def __init__(self, dur=10, point_per_rot=200, height=1.8):
+    def __init__(self, dur, point_per_rot=200, height=1.8):
         self.duration = dur
         self.pprot = point_per_rot
         self.height = 1.8

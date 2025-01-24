@@ -32,6 +32,7 @@ for i in range(len(durs)):
     dur = durs[i]
     durname = durnames[i]
 
+
     scene_name = f"S0N0osci60_{durname}"
 
     Scene = pg.PathGenerator(dur=dur, point_per_rot=360, height=1.8)

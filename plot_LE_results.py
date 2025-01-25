@@ -41,12 +41,12 @@ def plotLE(subj_run, ax):
 
 
 # participant
-#subj_name = "JR"
-subj_name = "LE_Modell"
+subj_name = "JR"
+#subj_name = "LE_Modell"
 #subj_names = ["JR", "LE_Modell"]
 
 # keyword/s for only plotting some scenes
-plot_keyword = ["S0N0_", "S0N90_", "S0N0rot"]
+#plot_keyword = ["S0N0_", "S0N90_", "S0N0rot"]
 #plot_keyword = ["headrot360"]
 #plot_keyword = None
 

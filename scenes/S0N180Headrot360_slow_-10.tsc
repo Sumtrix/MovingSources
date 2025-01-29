@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE session [
-    <!ENTITY coords_speech SYSTEM "/paths/S0N180Headrot360_fast/speaker.txt">
-    <!ENTITY coords_noise SYSTEM "/paths/S0N180Headrot360_fast/noise.txt">
-    <!ENTITY orient_head SYSTEM "/paths/S0N180Headrot360_fast/head.txt">
+    <!ENTITY coords_speech SYSTEM "/paths/S0N180Headrot360_slow/speaker.txt">
+    <!ENTITY coords_noise SYSTEM "/paths/S0N180Headrot360_slow/noise.txt">
+    <!ENTITY orient_head SYSTEM "/paths/S0N180Headrot360_slow/head.txt">
 ]>
 <session name="S0N180Headrot360" duration="60" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
   <scene name="labscene" guiscale="15">

@@ -15,7 +15,7 @@
       <position> &coords_speech; </position>
     </source>
     
-    <source name="masker" colorw="#101077">
+    <source name="masker" color="#101077">
       <sound name="noise">
         <plugins>
           <sndfile name="sounds/OLSA_gen/noise_example_1.wav" level="75"/>

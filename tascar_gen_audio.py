@@ -25,6 +25,7 @@ root = "C:/Users/annik/OneDrive/Desktop/Projekt/MovingSources/"
 print("\nV V V V V V Command Output V V V V V V \n")
 os.chdir(tascar_dir)
 for file_name in file_names:    
+    print(file_name)
     command = [
         "tascar_renderfile",
         "-o",

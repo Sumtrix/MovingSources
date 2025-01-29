@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE session [
-    <!ENTITY coords_speech SYSTEM "/paths/S0N0osci60_fast/speaker.txt">
-    <!ENTITY coords_noise SYSTEM "/paths/S0N0osci60_fast/noise_osci.txt">
+    <!ENTITY coords_speech SYSTEM "/paths/S0N0osci60_slow/speaker.txt">
+    <!ENTITY coords_noise SYSTEM "/paths/S0N0osci60_slow/noise_osci.txt">
 ]>
 <session name="S0N0osci60_fast" duration="60" license="CC BY-SA 3.0" attribution="Joanna Luberadzka">
   <scene name="labscene" guiscale="15">

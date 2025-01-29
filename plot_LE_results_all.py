@@ -4,6 +4,22 @@ import glob
 import os
 from plot_style import * 
 
+def interpolate_vector(vector):
+    """
+    Interpolates a vector to be twice as long using linear interpolation.
+    
+    Parameters:
+        vector (list or np.ndarray): Input vector.
+        
+    Returns:
+        np.ndarray: Interpolated vector with twice the length.
+    """
+    x_old = np.linspace(0, 1, len(vector))
+    x_new = np.linspace(0, 1, 2 * len(vector) - 1)
+    
+    return np.interp(x_new, x_old, vector)
+
+
 def getAngleVec(scene_name, numVals):
     numVals += 1
     if "medium" in scene_name:
@@ -44,9 +60,10 @@ def moving_average(data, window_size):
 
 def plotConditions(scene_conditions, allInOne=False):
     if allInOne:
-        _, axes = plt.subplots(1,1)
+        fig, axes = plt.subplots(1,1)
     else:
-        _, axes = plt.subplots(2, 2)
+        fig, axes = plt.subplots(2, 2)
+    fig.suptitle(f'{subj_name}', fontweight="bold")
     if allInOne: condition_legend = []
     for axidx, condition in enumerate(scene_conditions):
         if allInOne:
@@ -59,7 +76,7 @@ def plotConditions(scene_conditions, allInOne=False):
             scene_name = os.path.basename(scene)
             condition = ' '.join(scene_name[:-4].split("_")[1:])
             with np.load(scene) as data:
-                if "LE_Modell" in scene_name:
+                if "LEModel" in subj_name:
                     meas = data["data"]
                 else:
                     meas = data["le"]
@@ -94,11 +111,13 @@ def plotConditions(scene_conditions, allInOne=False):
     # > S0N0rot 
     # > S0N180 headturn
 
+
+# sets plot style determined in "plot_style.py"
 set_plot_style()
 
-subj_name = "JR"
-window_size = 30        # no smoothing if 0
-one_plot = False
+#subj_name = ["AB", "JR", "AH", "JRH", "LM", "LEModel"]
+subj_name = "JRH"
+window_size = 30       # no smoothing if 0
 
 # ---------------------------------
 # ---------------------------------
@@ -108,6 +127,8 @@ root_results = "./results"
 subj_names = os.listdir(root_results)
 if type(subj_name)==str:
     subj_names = [subj_name]
+else:
+    subj_names = subj_name
     
 for subj_name in subj_names:
     subj_path = os.path.join(root_results, subj_name)
@@ -116,6 +137,8 @@ for subj_name in subj_names:
     scenes_med_10 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*medium_-10*"))))
     scenes_slow_7 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*slow_-7*"))))
     scenes_slow_10 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*slow_-10*"))))
+    
+    print(scenes_med_7)
     
     #------------------------------------------------
     # all conditions and all data
@@ -153,6 +176,37 @@ for subj_name in subj_names:
                         scenes_slow_10[select_indices]]
     plotConditions(scene_conditions, allInOne=True)
 
+
+    # N0S180 rot both
+    # select_indices = [3]
+    # scene_conditions = [scenes_med_7[select_indices], 
+    #                     scenes_slow_7[select_indices]]
+    # plotConditions(scene_conditions, allInOne=True)
+    
+    # scene_conditions = [scenes_med_10[select_indices], 
+    #                     scenes_slow_10[select_indices]]
+    # plotConditions(scene_conditions, allInOne=True)
+
+
+
+    #------------------------------------------------
+    # # S0N270N90 headrot
+    # select_indices = [4]
+    # scene_conditions = [scenes_med_7[select_indices], 
+    #                     scenes_med_10[select_indices]]
+    # plotConditions(scene_conditions, allInOne=True)
+    
+    # scene_conditions = [scenes_slow_7[select_indices], 
+    #                     scenes_slow_10[select_indices]]
+    # plotConditions(scene_conditions, allInOne=True)
+    
+    # plot comparison S0N0 S0N90 S0Nrot
+    select_indices = [4]
+    scene_conditions = [scenes_med_7[select_indices], 
+                        scenes_med_10[select_indices], 
+                        scenes_slow_7[select_indices], 
+                        scenes_slow_10[select_indices]]
+    plotConditions(scene_conditions)
 
 
 

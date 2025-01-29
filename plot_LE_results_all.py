@@ -85,10 +85,14 @@ def plotConditions(scene_conditions, allInOne=False):
 # per SNR 
 # angle vector for every situation
 # plot of every situation singular
-# all situtaions per subj in one (overall range)
+# all situtaions per subj (for one in particular) in one (overall range)
 # compare S0N0 S0N90 S0Nrot
 # compare S0N0 osci
-# pro kondition in einem plot medium vs slow + modell
+# var area plot 
+# pro kondition in einem plot medium vs slow + modell + variance area
+    # most interesting: 
+    # > S0N0rot 
+    # > S0N180 headturn
 
 set_plot_style()
 

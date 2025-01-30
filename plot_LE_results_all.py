@@ -20,33 +20,30 @@ def interpolate_vector(vector):
     return np.interp(x_new, x_old, vector)
 
 
-def getAngleVec(scene_name, numVals):
+def getAngleVec(scene_name, numVals, numLabels=12):
     numVals += 1
     if "medium" in scene_name:
         dur = 30
     elif "slow" in scene_name:
         dur = 60
     
-    numLabels = 12
-    xticks_positions = np.linspace(0, numVals, numLabels) # positions to label via xticks
-    if any in ["S0N0", "S0N90", "S0N90rot"] in scene_name:
-        print(["S0N0", "S0N90", "S0N90rot"])
-        angles = np.linspace(0, 3*360, numVals)
-        xticks_labels = np.linspace(0, 3*360, numLabels)
+    xticks_positions = np.linspace(0, numVals, numLabels+1) # positions to label via xticks
+    print(scene_name)
+    if any(s in scene_name for s in ["S0N0_", "S0N90_", "S0N0rot_"]):
+        print(["S0N0_", "S0N90_", "S0N0rot_"])
+        xticks_labels = np.linspace(0, 3*360, numLabels+1)
     elif "S0N0osci60" in scene_name:
         print("S0N0osci60")
-        angles = 60 * np.sin(2 * np.pi * 1 * np.linspace(0, dur, numVals))
-        xticks_labels = 60 * np.sin(2 * np.pi * 1 * np.linspace(0, dur, numLabels))
+        xticks_labels = 60 * np.sin(2 * np.pi * 1 * np.linspace(0, dur, numLabels+1))
     elif "S0N180Headrot360" in scene_name:
         print("S0N180Headrot360")
-        angles = np.linspace(0, 3*360, numVals)
-        xticks_labels = np.linspace(0, 3*360, numLabels)
-    else:# "S0N90N270Headrot90" in scene_name:
-        angles = 90 * np.sin(np.pi * 0.2 * np.linspace(0, dur, numVals))**2
-        xticks_labels = 90 * np.sin(np.pi * 0.2 * np.linspace(0, dur, numLabels))**2
-    # plt.plot(xticks_labels)
-    # plt.show()
-    return xticks_positions, np.round(xticks_labels, 2)
+        xticks_labels = np.linspace(0, 3*360, numLabels+1)
+    elif "S0N90N270" in scene_name:
+        print("S0N90N270Headrot90")
+        xticks_labels = 90 * np.sin(np.pi * 0.2 * np.linspace(0, dur, numLabels+1))**2
+    else:
+        raise NameError("Scene not recognizes")
+    return xticks_positions, xticks_labels
 
 def moving_average(data, window_size):
     if window_size > len(data):
@@ -58,7 +55,7 @@ def moving_average(data, window_size):
         return np.convolve(data, np.ones(window_size) / window_size, mode='valid')
 
 
-def plotConditions(scene_conditions, allInOne=False):
+def plotConditions(scene_conditions, allInOne=False, labelAngles=True, numLabels=12):
     if allInOne:
         fig, axes = plt.subplots(1,1)
     else:
@@ -83,12 +80,20 @@ def plotConditions(scene_conditions, allInOne=False):
                 smoothed_data = moving_average(meas, window_size)
                 if not isinstance(smoothed_data, np.ndarray): continue
                 ax.plot(smoothed_data)
-                #numVals = len(smoothed_data)
-                #pos, labels = getAngleVec(scene_name, numVals)
-                #ax.set_xticks(pos, labels)
                 ax.set_title(condition)
                 ax.set_ylim([0, 14])
                 ax.grid(which="both", alpha=0.8, linestyle=':')
+                if labelAngles:
+                    numVals = len(smoothed_data)
+                    if isinstance(labelAngles, str):
+                        pos, labels = getAngleVec(labelAngles, numVals, numLabels)
+                    else:
+                        pos, labels = getAngleVec(scene_name, numVals, numLabels)
+                    ax.set_xticks(pos, np.round(labels, 2).astype(np.int32))
+                    ax.set_xlabel("Angle (degrees)")
+                else:
+                    ax.set_xlabel("Samples")
+                ax.set_ylabel("Listening Effort")
                 condition_legend.append(scene_name[:-4])
             #print("\n", os.path.join(run, scene), "\n", len(meas))
             ax.legend(condition_legend, ncol=2)
@@ -116,7 +121,7 @@ def plotConditions(scene_conditions, allInOne=False):
 set_plot_style()
 
 #subj_name = ["AB", "JR", "AH", "JRH", "LM", "LEModel"]
-subj_name = "LEModel"
+subj_name = "JR"
 window_size = 30       # no smoothing if 0
 
 # ---------------------------------
@@ -140,10 +145,11 @@ for subj_name in subj_names:
     
     print(scenes_med_7)
     
+    
     #------------------------------------------------
     # all conditions and all data
     scene_conditions = [scenes_med_7, scenes_med_10, scenes_slow_7, scenes_slow_10]
-    plotConditions(scene_conditions)
+    plotConditions(scene_conditions, labelAngles=False)
     
     #------------------------------------------------
     # plot comparison S0N0 S0N90 S0Nrot
@@ -162,7 +168,7 @@ for subj_name in subj_names:
                         scenes_med_10[select_indices], 
                         scenes_slow_7[select_indices], 
                         scenes_slow_10[select_indices]]
-    plotConditions(scene_conditions)
+    plotConditions(scene_conditions, labelAngles="S0N0_")
     
     
     #------------------------------------------------
@@ -206,7 +212,7 @@ for subj_name in subj_names:
                         scenes_med_10[select_indices], 
                         scenes_slow_7[select_indices], 
                         scenes_slow_10[select_indices]]
-    plotConditions(scene_conditions)
+    plotConditions(scene_conditions, numLabels=24)
 
 
 

@@ -35,7 +35,7 @@ def npy_to_npz_in_directory(input_directory, output_directory=None):
 if __name__ == "__main__":
     #input_dir = "/Users/johannesrolfes/Downloads/AW__Git-Branch/SNR-3dB_LE"  # Replace with the actual path
     #output_dir = "/Users/johannesrolfes/Downloads/AW__Git-Branch/LE_Modell_-3"  # Optional, specify output directory if needed
-    input_dir = "/Users/johannesrolfes/Downloads/AW__Git-Branch/SNR-7dB_LE"
-    output_dir = "/Users/johannesrolfes/Downloads/AW__Git-Branch/LE_Modell_-7"  # Optional, specify output directory if needed
+    input_dir = "results/LEModel_npy"
+    output_dir = "results/LEModel"  # Optional, specify output directory if needed
 
     npy_to_npz_in_directory(input_dir, output_dir)

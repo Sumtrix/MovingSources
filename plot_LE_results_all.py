@@ -116,7 +116,7 @@ def plotConditions(scene_conditions, allInOne=False):
 set_plot_style()
 
 #subj_name = ["AB", "JR", "AH", "JRH", "LM", "LEModel"]
-subj_name = "JRH"
+subj_name = "LEModel"
 window_size = 30       # no smoothing if 0
 
 # ---------------------------------

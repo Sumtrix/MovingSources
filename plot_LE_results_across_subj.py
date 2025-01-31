@@ -124,8 +124,8 @@ for condKeyword in scenes:
             df = loadLEToDf(scene, df, window_size)
 
     # filter dataframe 
-    filtered_df = df[df["name"].str.contains(condKeyword)]
     lemodel_df = df[df["name"].str.contains(f"LEModel/{condKeyword}")]
+    filtered_df = df[~df.index.isin(lemodel_df.index) & df["name"].str.contains(condKeyword)]
 
     lemodel_data = lemodel_df["le"].tolist()[0]
     interp_lemodel = elongate_vector(lemodel_data, len(filtered_df["le"].tolist()[0]))

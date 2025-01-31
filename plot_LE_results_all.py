@@ -57,9 +57,9 @@ def moving_average(data, window_size):
 
 def plotConditions(scene_conditions, allInOne=False, labelAngles=True, numLabels=12):
     if allInOne:
-        fig, axes = plt.subplots(1,1)
+        fig, axes = plt.subplots(1,1, figsize=(11, 8))
     else:
-        fig, axes = plt.subplots(2, 2)
+        fig, axes = plt.subplots(2, 2, figsize=(11, 8))
     fig.suptitle(f'{subj_name}', fontweight="bold")
     if allInOne: condition_legend = []
     for axidx, condition in enumerate(scene_conditions):
@@ -70,17 +70,19 @@ def plotConditions(scene_conditions, allInOne=False, labelAngles=True, numLabels
             ax = axes[row, col]
         if not allInOne: condition_legend = []
         for _, scene in enumerate(condition):
+            name = scene.split("/")
+            print(name)
             scene_name = os.path.basename(scene)
-            condition = ' '.join(scene_name[:-4].split("_")[1:])
+            condition_name = ' '.join(scene_name[:-4].split("_")[1:])
             with np.load(scene) as data:
-                if "LEModel" in subj_name:
+                if "LEModel" in scene:
                     meas = data["data"]
                 else:
                     meas = data["le"]
                 smoothed_data = moving_average(meas, window_size)
                 if not isinstance(smoothed_data, np.ndarray): continue
                 ax.plot(smoothed_data)
-                ax.set_title(condition)
+                ax.set_title(condition_name)
                 ax.set_ylim([0, 14])
                 ax.grid(which="both", alpha=0.8, linestyle=':')
                 if labelAngles:
@@ -97,6 +99,7 @@ def plotConditions(scene_conditions, allInOne=False, labelAngles=True, numLabels
                 condition_legend.append(scene_name[:-4])
             #print("\n", os.path.join(run, scene), "\n", len(meas))
             ax.legend(condition_legend, ncol=2)
+    fig.tight_layout(pad=1)
     plt.show()
 
 
@@ -121,8 +124,9 @@ def plotConditions(scene_conditions, allInOne=False, labelAngles=True, numLabels
 set_plot_style()
 
 #subj_name = ["AB", "JR", "AH", "JRH", "LM", "LEModel"]
-subj_name = "JR"
-window_size = 30       # no smoothing if 0
+subj_name = "LEModel"
+window_size = 25       # no smoothing if 0
+modelRef = False
 
 # ---------------------------------
 # ---------------------------------
@@ -138,14 +142,17 @@ else:
 for subj_name in subj_names:
     subj_path = os.path.join(root_results, subj_name)
     
-    scenes_med_7 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*medium_-7*"))))
-    scenes_med_10 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*medium_-10*"))))
-    scenes_slow_7 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*slow_-7*"))))
-    scenes_slow_10 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*slow_-10*"))))
+    scenes_med_7 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*medium_-7*"))), dtype=object)
+    scenes_med_10 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*medium_-10*"))), dtype=object)
+    scenes_slow_7 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*slow_-7*"))), dtype=object)
+    scenes_slow_10 = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*slow_-10*"))), dtype=object)
     
-    print(scenes_med_7)
-    
-    
+    if modelRef:
+        scenes_med_7 = np.insert(scenes_med_7, len(scenes_med_7), glob.glob(os.path.join(root_results, "LEModel", f"*medium_-7*")))
+        scenes_med_10 = np.insert(scenes_med_7, len(scenes_med_10), glob.glob(os.path.join(root_results, "LEModel", f"*medium_-10*")))
+        scenes_slow_7 = np.insert(scenes_med_7, len(scenes_slow_7), glob.glob(os.path.join(root_results, "LEModel", f"*slow_-7*")))
+        scenes_slow_10 = np.insert(scenes_med_7, len(scenes_slow_10), glob.glob(os.path.join(root_results, "LEModel", f"*slow_-10*")))
+
     #------------------------------------------------
     # all conditions and all data
     scene_conditions = [scenes_med_7, scenes_med_10, scenes_slow_7, scenes_slow_10]
@@ -194,7 +201,6 @@ for subj_name in subj_names:
     # plotConditions(scene_conditions, allInOne=True)
 
 
-
     #------------------------------------------------
     # # S0N270N90 headrot
     select_indices = [4]
@@ -213,4 +219,13 @@ for subj_name in subj_names:
     # scene_conditions = [scenes_slow_7[select_indices], 
     #                     scenes_slow_10[select_indices]]
     # plotConditions(scene_conditions, allInOne=True)
+    
+
+    #------------------------------------------------
+    # average LE to S0Nrot
+    select_indices = [2]
+    scene_conditions = [scenes_slow_7[select_indices], 
+                        scenes_slow_10[select_indices]]
+    plotConditions(scene_conditions, allInOne=True, labelAngles="S0N0rot_")
+    
     

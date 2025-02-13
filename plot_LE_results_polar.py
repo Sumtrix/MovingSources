@@ -111,9 +111,6 @@ modelRef = False
 #condKeyword = "S0N180Headrot360_medium_-10"
 for condKeyword in scenes:
     
-    fig, axes = plt.subplots(1,1, figsize=(11, 8))
-    fig.suptitle(f"Subject averages - {condKeyword}", fontweight="bold")
-
     # all data to one dataframe
     df = pd.DataFrame(columns=['name', 'le'])
     root_results = "./results"    
@@ -134,13 +131,14 @@ for condKeyword in scenes:
     # plot stuff
     mean_LE = pd.DataFrame(filtered_df["le"].tolist()).mean().to_numpy()
     std_LE = pd.DataFrame(filtered_df["le"].tolist()).std().to_numpy()
-    x = np.arange(len(mean_LE))
-    plt.plot(mean_LE)
-    plt.plot(interp_lemodel, "k:")
-    plt.ylim([0, 14])
-    plt.fill_between(x, 
-                    mean_LE - std_LE, 
-                    mean_LE + std_LE, 
-                    color="gray", alpha=0.3, label="Tolerance Area")
-    plt.legend([f"average", "LEmodel"])
+    x_idx, x_labels = getAngleVec(condKeyword, len(mean_LE)-1, len(mean_LE)-1)
+    
+
+    fig, axes = plt.subplots(1, 1, figsize=(11, 8), subplot_kw={'polar': True})
+    fig.suptitle(f"Subject averages - {condKeyword}", fontweight="bold")
+    axes.plot(np.radians(x_labels), mean_LE)
+    axes.plot(np.radians(x_labels),interp_lemodel, "k:")
+    #axes.fill_between(x, mean_LE - std_LE, mean_LE + std_LE, color="gray", alpha=0.3, label="Tolerance Area")
+    axes.set_ylim([0, 14])
+    axes.legend([f"average", "LEmodel"])
     plt.show()

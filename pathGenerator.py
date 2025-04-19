@@ -103,16 +103,14 @@ class PathGenerator():
         return points
 
     def genOscillatingCoords(self, start_angle, radius, rotation_angle, angle_range, osci_type, freq):
-        self.checkNyquist(angle_range, freq)
+        #self.checkNyquist(angle_range, freq)
         match osci_type:
             case "sin":
-                #num_points = int(self.pprot * (rotation_angle / 360))
                 num_points = int(self.pprot * ((angle_range)/360) * freq * self.duration)
                 times = np.linspace(0, self.duration, num_points + 1)
                 oscillation = (angle_range/2) * np.sin(2 * np.pi * freq * times)
                 angles = np.radians(start_angle) + np.radians(oscillation) + np.linspace(0, np.radians(rotation_angle), num_points + 1)
             case "lin":
-                #num_points = int(self.pprot * (rotation_angle / 360))
                 num_points = int(self.pprot * ((angle_range)/360) * freq * self.duration)
                 times = np.linspace(0, self.duration, num_points + 1)
                 oscillation = (angle_range/2) * signal.sawtooth(2 * np.pi * freq * (times/self.fs), 0.5)
@@ -147,7 +145,7 @@ class PathGenerator():
         return orientations
     
     def genOsciOrientation(self, start_angle, rotation_angle, angle_range, osci_type, freq):    
-        self.checkNyquist(angle_range, freq)
+        #self.checkNyquist(angle_range, freq)
         if freq==0:
             raise ValueError("Freq must be >0 otherwise use rotation source.")
         match osci_type:
@@ -206,29 +204,20 @@ class PathGenerator():
                     for t, x, y, z in path:
                         f.write(f"{t:.2f} {x:.2f} {y:.2f} {z:.2f}\n")
 
-    # def checkNyquist(self, angle_range, freq):
-    #     self.fs = round((self.pprot * ((angle_range*2)/360) * freq))
-    #     print(f"myqist/Max frequency = {self.fs/2}")
-    #     print(freq)
-    #     if freq >= (self.fs/2):
-    #         raise ValueError(f"Oscillation freq {freq}>= Nyquist of {self.fs/2}")
-    #     else:
-    #         pass
-
     
-    def checkNyquist(self,angle_range, freq):
-        effective_pprot = self.pprot * ((angle_range*2) / 360)
-        sampling_rate = freq * effective_pprot
-        nyquist_freq = sampling_rate / 2
-        max_freq = sampling_rate / (2 * effective_pprot)
-        min_pprot_needed = 2 * freq * 360 / (angle_range*2)
+    # def checkNyquist(self,angle_range, freq):
+    #     effective_pprot = self.pprot * ((angle_range*2) / 360)
+    #     sampling_rate = freq * effective_pprot
+    #     nyquist_freq = sampling_rate / 2
+    #     max_freq = sampling_rate / (2 * effective_pprot)
+    #     min_pprot_needed = 2 * freq * 360 / (angle_range*2)
 
-        # Check for aliasing
-        if freq > nyquist_freq:
-            print("WARNING: Aliasing detected! Nyquist criterion is not met.")
-            print(f"Maximum frequency possible without aliasing: {nyquist_freq:.2f} Hz")
-            print(f"Minimum pprot needed to avoid aliasing: {min_pprot_needed:.2f}")
-        else:
-            print("No aliasing detected.")
-            print(f"Maximum frequency possible without aliasing: {nyquist_freq:.2f} Hz")
-            print(f"Minimum pprot needed to avoid aliasing: {min_pprot_needed:.2f}")
+    #     # Check for aliasing
+    #     if freq > nyquist_freq:
+    #         print("WARNING: Aliasing detected! Nyquist criterion is not met.")
+    #         print(f"Maximum frequency possible without aliasing: {nyquist_freq:.2f} Hz")
+    #         print(f"Minimum pprot needed to avoid aliasing: {min_pprot_needed:.2f}")
+    #     else:
+    #         print("No aliasing detected.")
+    #         print(f"Maximum frequency possible without aliasing: {nyquist_freq:.2f} Hz")
+    #         print(f"Minimum pprot needed to avoid aliasing: {min_pprot_needed:.2f}")

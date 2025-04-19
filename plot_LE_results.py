@@ -41,7 +41,7 @@ def plotLE(subj_run, ax):
 
 
 # participant
-subj_name = "JR"
+subj_name = "JRH"
 #subj_name = "LE_Modell"
 #subj_names = ["JR", "LE_Modell"]
 

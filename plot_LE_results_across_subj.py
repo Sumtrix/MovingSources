@@ -4,6 +4,8 @@ import glob
 import os
 from plot_style import * 
 import pandas as pd
+import scipy.stats as st
+
 
 def elongate_vector(original_vector, new_length):
     """
@@ -75,31 +77,57 @@ def loadLEToDf(scene, df, window_size=False):
 ################################################################################
 ################################################################################
 ################################################################################
+scenes = [
+"S0N0_slow_-7",
+"S0N0_medium_-7", 
+"S0N0_slow_-10",
+"S0N0_medium_-10",
+"S0N90_slow_-7",
+"S0N90_medium_-7",
+"S0N90_slow_-10",
+"S0N90_medium_-10",
+"S0N0rot_slow_-7",
+"S0N0rot_medium_-7",
+"S0N0rot_slow_-10",
+"S0N0rot_medium_-10",
+"S0N180Headrot360_slow_-7", 
+"S0N180Headrot360_medium_-7", 
+"S0N180Headrot360_slow_-10",
+"S0N180Headrot360_medium_-10",
+"S0N90N270Headrot90_slow_-7", 
+"S0N90N270Headrot90_medium_-7",
+"S0N90N270Headrot90_slow_-10", 
+"S0N90N270Headrot90_medium_-10", 
+"S0N0osci60_slow_-7",
+"S0N0osci60_medium_-7",
+"S0N0osci60_slow_-10", 
+"S0N0osci60_medium_-10",
+]
 
-scenes = ["S0N180Headrot360_slow_-7", 
-            "S0N90N270Headrot90_slow_-7", 
-            "S0N0_medium_-7", 
-            "S0N90N270Headrot90_medium_-10", 
-            "S0N90N270Headrot90_slow_-10", 
-            "S0N180Headrot360_medium_-7", 
-            "S0N0osci60_slow_-10", 
-            "S0N0rot_medium_-7",
-            "S0N0_slow_-7",
-            "S0N90_medium_-7",
-            "S0N180Headrot360_medium_-10",
-            "S0N0osci60_slow_-7",
-            "S0N0rot_slow_-10",
-            "S0N90_slow_-10",
-            "S0N0rot_medium_-10",
-            "S0N0rot_slow_-7",
-            "S0N0osci60_medium_-10",
-            "S0N90_slow_-7",
-            "S0N90N270Headrot90_medium_-7",
-            "S0N0_medium_-10",
-            "S0N0osci60_medium_-7",
-            "S0N90_medium_-10",
-            "S0N0_slow_-10",
-            "S0N180Headrot360_slow_-10"]
+# scenes = ["S0N180Headrot360_slow_-7", 
+#             "S0N90N270Headrot90_slow_-7", 
+#             "S0N0_medium_-7", 
+#             "S0N90N270Headrot90_medium_-10", 
+#             "S0N90N270Headrot90_slow_-10", 
+#             "S0N180Headrot360_medium_-7", 
+#             "S0N0osci60_slow_-10", 
+#             "S0N0rot_medium_-7",
+#             "S0N0_slow_-7",
+#             "S0N90_medium_-7",
+#             "S0N180Headrot360_medium_-10",
+#             "S0N0osci60_slow_-7",
+#             "S0N0rot_slow_-10",
+#             "S0N90_slow_-10",
+#             "S0N0rot_medium_-10",
+#             "S0N0rot_slow_-7",
+#             "S0N0osci60_medium_-10",
+#             "S0N90_slow_-7",
+#             "S0N90N270Headrot90_medium_-7",
+#             "S0N0_medium_-10",
+#             "S0N0osci60_medium_-7",
+#             "S0N90_medium_-10",
+#             "S0N0_slow_-10",
+#             "S0N180Headrot360_slow_-10"]
 
 # sets plot style determined in "plot_style.py"
 set_plot_style()
@@ -108,11 +136,19 @@ subj_names = ["AB", "JR", "AH", "JRH", "LM", "LEModel"]
 window_size = 25       # no smoothing if 0
 modelRef = False
 
+subj_means10 = []
+lemodel_mean10 = []
+subj_means7 = []
+lemodel_mean7 = []
+
+fig, axes = plt.subplots(6,4, figsize=(10, 6), constrained_layout=True)
+axes_flat = axes.flatten()
+
 #condKeyword = "S0N180Headrot360_medium_-10"
-for condKeyword in scenes:
+for idx, condKeyword in enumerate(scenes):
     
-    fig, axes = plt.subplots(1,1, figsize=(11, 8))
-    fig.suptitle(f"Subject averages - {condKeyword}", fontweight="bold")
+    #fig, axes = plt.subplots(1,1, figsize=(10, 6))
+    #fig.suptitle(f"Subject averages - {condKeyword}", fontweight="bold")
 
     # all data to one dataframe
     df = pd.DataFrame(columns=['name', 'le'])
@@ -123,6 +159,7 @@ for condKeyword in scenes:
         for scene in subj_scenes:
             df = loadLEToDf(scene, df, window_size)
 
+    print(df.head())
     # filter dataframe 
     lemodel_df = df[df["name"].str.contains(f"LEModel/{condKeyword}")]
     filtered_df = df[~df.index.isin(lemodel_df.index) & df["name"].str.contains(condKeyword)]
@@ -133,16 +170,75 @@ for condKeyword in scenes:
     # for i in range(len(df["name"])):
     #     print(df.iloc[i]["name"])
 
-    # plot stuff
     mean_LE = pd.DataFrame(filtered_df["le"].tolist()).mean().to_numpy()
     std_LE = pd.DataFrame(filtered_df["le"].tolist()).std().to_numpy()
     x = np.arange(len(mean_LE))
-    plt.plot(mean_LE)
-    plt.plot(interp_lemodel, "k:")
-    plt.ylim([0, 14])
-    plt.fill_between(x, 
+    
+    # # mean values for correlation
+    # if "-10" in condKeyword:
+    #     subj_means10.append(np.mean(mean_LE).tolist())
+    #     lemodel_mean10.append(np.mean(lemodel_data).tolist())
+    # elif "-7" in condKeyword:
+    #     subj_means7.append(np.mean(mean_LE).tolist())
+    #     lemodel_mean7.append(np.mean(lemodel_data).tolist())
+    
+    # plot stuff
+    # plt.plot(mean_LE)
+    # plt.plot(interp_lemodel, "k:")
+    # plt.ylim([0, 14])
+    # plt.fill_between(x, 
+    #                 mean_LE - std_LE, 
+    #                 mean_LE + std_LE, 
+    #                 color="gray", alpha=0.3, label="Tolerance Area")
+    # plt.legend([f"average", "LEmodel"])
+    # plt.show()
+    
+    
+    
+        # Axes settings
+    plt.rcParams["axes.titlesize"] = 8  # Title font size
+    plt.rcParams["axes.titleweight"] = "regular"  # Title font size
+    plt.rcParams["axes.labelsize"] = 6  # Axis label font size
+    plt.rcParams["axes.grid"] = True  # Show grid
+    plt.rcParams["grid.alpha"] = 0.5  # Grid transparency
+    plt.rcParams["axes.spines.top"] = False  # Hide top spine
+    plt.rcParams["axes.spines.right"] = False  # Hide right spine
+    axes_flat[idx].tick_params(labelsize=6)
+    
+    axes_flat[idx].plot(mean_LE)
+    axes_flat[idx].plot(interp_lemodel, "k:")
+    axes_flat[idx].set_ylim([0, 14])
+    axes_flat[idx].fill_between(x, 
                     mean_LE - std_LE, 
                     mean_LE + std_LE, 
                     color="gray", alpha=0.3, label="Tolerance Area")
-    plt.legend([f"average", "LEmodel"])
-    plt.show()
+    axes_flat[idx].set_title(condKeyword)
+    axes_flat[idx].legend([f"Subj average", "LEmodel"])
+plt.show()
+    
+    
+# SCATTER PLOT
+
+# slope, intercept, r, p, se = st.linregress(subj_means10, lemodel_mean10)
+# print(f"R^2 = {r**2}")
+# print(f"P = {p}")
+# plt.scatter(subj_means10, lemodel_mean10, label="SNR -10")
+# plt.plot(subj_means10, intercept + slope * np.array(subj_means10), 'k-.', alpha=0.5, label=f'Reg -10: {round(intercept, 2)}+{round(slope, 2)}*x')
+
+
+# slope, intercept, r, p, se = st.linregress(subj_means7, lemodel_mean7)
+# print(f"R^2 = {r**2}")
+# print(f"P = {p}")
+# plt.scatter(subj_means7, lemodel_mean7, marker="^", alpha=0.6, label="SNR -7")
+# plt.plot(subj_means7, intercept + slope * np.array(subj_means7), 'k-.', alpha=0.5, label=f'Reg -7: {round(intercept, 2)}+{round(slope, 2)}*x')
+
+
+# plt.xlim([4, 14])
+# plt.ylim([4, 14])
+# plt.xlabel("Subject average")
+# plt.ylabel("LE Model average")
+# plt.legend()
+# ax = plt.gca()
+# ax.set_aspect('equal', adjustable='box')
+# plt.savefig('/Users/johannesrolfes/Desktop/StudiumHA/Uni/Sem2/Projekt/scatterplot.eps', format='eps')
+# plt.show()

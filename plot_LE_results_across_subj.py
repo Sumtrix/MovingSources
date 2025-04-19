@@ -157,19 +157,19 @@ for idx, condKeyword in enumerate(scenes):
         subj_path = os.path.join(root_results, subj_name)
         subj_scenes = np.array(sorted(glob.glob(os.path.join(root_results, subj_name, f"*.npz"))), dtype=object)    
         for scene in subj_scenes:
-            df = loadLEToDf(scene, df, window_size)
+            df = loadLEToDf(os.path.relpath(scene), df, window_size)
 
     print(df.head())
     # filter dataframe 
-    lemodel_df = df[df["name"].str.contains(f"LEModel/{condKeyword}")]
+    lemodel_df = df[df["name"].str.contains(f"LEModel.*{condKeyword}")]
+    #lemodel_df = lemodel_df[lemodel_df["name"].str.contains(f"{condKeyword}")]
     filtered_df = df[~df.index.isin(lemodel_df.index) & df["name"].str.contains(condKeyword)]
 
     lemodel_data = lemodel_df["le"].tolist()[0]
     interp_lemodel = elongate_vector(lemodel_data, len(filtered_df["le"].tolist()[0]))
 
-    # for i in range(len(df["name"])):
-    #     print(df.iloc[i]["name"])
 
+    # plot stuff
     mean_LE = pd.DataFrame(filtered_df["le"].tolist()).mean().to_numpy()
     std_LE = pd.DataFrame(filtered_df["le"].tolist()).std().to_numpy()
     x = np.arange(len(mean_LE))

@@ -1,28 +1,23 @@
 Git repository from the Fortgeschrittenen-Projekt Hörtechnik und Audiologie 
 WiSE 2024/25 investigating the influence of moving sources on the listening effort.
 
-Date: 26.4.2025
-Authors:
-Johannes Rolfes, johannes.rolfes@uni-oldenburg.de
+Date: 26.4.2025  
+Authors:  
+Johannes Rolfes, johannes.rolfes@uni-oldenburg.de  
 Annika Beyer, annika.beyer@uni-oldenburg.de
 
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
 
 
 Files of interest
 -----------------
 
-# Plots from the poster: 
-plot_LE_results_cond.py
-plot_LE_results_across_subj.py
-
-# Render audio files 
-tascar_gen_audio.py
-
-# Generate source paths
-tascar_setup_generator.py
-(pathGenerator.py)
+- plot_LE_results_cond.py
+- plot_LE_results_across_subj.py 
+- tascar_gen_audio.py
+- tascar_setup_generator.py
+- (pathGenerator.py)
 
 Usage
 -----

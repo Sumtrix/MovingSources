@@ -78,12 +78,23 @@ def loadLEToDf(scene, df, window_size=False):
 ################################################################################
 ################################################################################
 
-scenes = ["S0N90N270Headrot90_medium_-10", 
-            "S0N180Headrot360_medium_-10",
-            "S0N0rot_medium_-10",
-            "S0N0osci60_medium_-10",
-            "S0N0_medium_-10",
-            "S0N90_medium_-10"]
+title_names = [
+    r"$\mathrm{S}_{0}\mathrm{N}_{0}$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{90}$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{\mathrm{rot}}$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{+90/-90}\mathrm{Head}_{\mathrm{osci90}}$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{180}\mathrm{Head}_{\mathrm{rot}}$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{\mathrm{osci120}}$",
+]
+
+scenes = [
+    "S0N0_slow_-10",
+    "S0N90_slow_-10",
+    "S0N0rot_slow_-10",
+    "S0N90N270Headrot90_slow_-10", 
+    "S0N180Headrot360_slow_-10",
+    "S0N0osci60_slow_-10"
+    ]
 
 # sets plot style determined in "plot_style.py"
 set_plot_style()
@@ -95,7 +106,7 @@ modelRef = False
 
 
 fig, axes = plt.subplots(2, 3, figsize=(14, 7))
-fig.suptitle(f"Subject 1 at -10 dB SNR, Medium", fontweight="bold")
+fig.suptitle(f"Subject 1 at -10 dB SNR, Medium and Slow", fontweight="bold")
 axes_flat = axes.flatten()
 
 # all data to one dataframe
@@ -108,22 +119,38 @@ for subj_name in subj_names:
         df = loadLEToDf(scene, df, window_size)
 print(df)
 
+xtick_positions = np.linspace(0, 1, 7)
+xtick_labels = [f'{i}/6' for i in range(7)]
+xtick_labels[0] = 0
+xtick_labels[-1] = 1
+
 #condKeyword = "S0N180Headrot360_medium_-10"
 for idx, condKeyword in enumerate(sorted(scenes)):
     
+    condKeyword_medium = condKeyword
+    condKeyword_slow = condKeyword.replace("_slow_", "_medium_")
+    
     # filter dataframe 
-    lemodel_df = df[df["name"].str.contains(f"LEModel/{condKeyword}")]
-    filtered_df = df[~df.index.isin(lemodel_df.index) & df["name"].str.contains(condKeyword)]
+    lemodel_df_slow = df[df["name"].str.contains(f"LEModel/{condKeyword_slow}")]
+    lemodel_df_medium = df[df["name"].str.contains(f"LEModel/{condKeyword_medium}")]
+    filtered_df_slow = df[~df.index.isin(lemodel_df_slow.index) & df["name"].str.contains(condKeyword_slow)]
+    filtered_df_medium = df[~df.index.isin(lemodel_df_medium.index) & df["name"].str.contains(condKeyword_medium)]
 
-    lemodel_data = lemodel_df["le"].tolist()[0]
-    interp_lemodel = elongate_vector(lemodel_data, len(filtered_df["le"].tolist()[0]))
+    lemodel_data_slow = lemodel_df_slow["le"].tolist()[0]
+    lemodel_data_medium = lemodel_df_medium["le"].tolist()[0]
+    subj_le_slow = filtered_df_slow["le"].tolist()[0]
+    subj_le_medium = filtered_df_medium["le"].tolist()[0]
+    
+    lemodel_slow_interp = elongate_vector(lemodel_data_slow, len(subj_le_medium))
+    lemodel_medium_interp = elongate_vector(lemodel_data_medium, len(subj_le_medium))
+    subj_le_slow_interp = elongate_vector(subj_le_slow, len(subj_le_medium))
+    subj_le_medium_interp = elongate_vector(subj_le_medium, len(subj_le_medium))
+
+    norm_time = np.linspace(0, 1, len(subj_le_medium))
 
     # mean_LE = pd.DataFrame(filtered_df["le"].tolist()).mean().to_numpy()
     # std_LE = pd.DataFrame(filtered_df["le"].tolist()).std().to_numpy()
     # x = np.arange(len(mean_LE))
-    
-    subj_le = filtered_df["le"].tolist()[0]
-    
     
     # numVals = len(subj_le)
     # if isinstance(labelAngles, str):
@@ -134,12 +161,27 @@ for idx, condKeyword in enumerate(sorted(scenes)):
     # ax.set_xlabel("Angle (degrees)")
 
     # plot stuff
-    axes_flat[idx].plot(subj_le, label="Subject 1")
-    axes_flat[idx].plot(interp_lemodel, "k:", label="LE Model")
+    axes_flat[idx].plot(norm_time, subj_le_slow_interp,"r-", label="Slow", markersize=0.5)
+    axes_flat[idx].plot(norm_time, subj_le_medium_interp,"b-", label="Medium", markersize=0.5)
+    #axes_flat[idx].plot(lemodel_slow_interp, "r-.", label="LE Model slow", markersize=0.5)
+    #axes_flat[idx].plot(lemodel_medium_interp, "b-.", label="LE Model medium", markersize=0.5)
     axes_flat[idx].set_ylim([0, 14])
-    axes_flat[idx].set_title(condKeyword)
+    axes_flat[idx].set_title(title_names[idx])
     axes_flat[idx].legend()
+    
+
+
+    axes_flat[idx].set_xticks(xtick_positions)
+    axes_flat[idx].set_xticklabels(xtick_labels)
+
+    #axes_flat[idx].tick_params(labelsize=8)
+    #pos, labels = getAngleVec(condKeyword, len(subj_le_slow_interp), 12)
+    #axes_flat[idx].set_xticks(pos, np.round(labels, 2).astype(np.int32))
+    #axes_flat[idx].set_xlabel("Angle (degrees)")
+
+fig.text(0.5, 0.05, 'Normalized Time', ha='center')
+fig.text(0.09, 0.5, 'Listening Effort', va='center', rotation='vertical')
 
 plt.show()
-fig.savefig('/Users/johannesrolfes/Desktop/StudiumHA/Uni/Sem2/Projekt/Subject1_res_-10medium.eps', format='eps')
+fig.savefig('/Users/johannesrolfes/Desktop/StudiumHA/Uni/Sem2/Projekt/Subject1_res_-10medium.pdf', format='pdf')
 

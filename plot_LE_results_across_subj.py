@@ -77,6 +77,40 @@ def loadLEToDf(scene, df, window_size=False):
 ################################################################################
 ################################################################################
 ################################################################################
+
+# (A) S\textsubscript{0}N\textsubscript{0} 
+# (B) S\textsubscript{0}N\textsubscript{90}
+# (C) S\textsubscript{0}N\textsubscript{rot}
+# (D) S\textsubscript{0}N\textsubscript{+90/-90}Head\textsubscript{osci90} 
+# (E) S\textsubscript{0}N\textsubscript{180}Head\textsubscript{rot} 
+# (F) S\textsubscript{0}N\textsubscript{osci120}
+title_names = [
+    r"$\mathrm{S}_{0}\mathrm{N}_{0},\ \mathrm{slow},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{0},\ \mathrm{medium},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{0},\ \mathrm{slow},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{0},\ \mathrm{medium},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{90},\ \mathrm{slow},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{90},\ \mathrm{medium},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{90},\ \mathrm{slow},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{90},\ \mathrm{medium},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{\mathrm{rot}},\ \mathrm{slow},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{\mathrm{rot}},\ \mathrm{medium},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{\mathrm{rot}},\ \mathrm{slow},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{\mathrm{rot}},\ \mathrm{medium},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{180}\mathrm{Head}_{\mathrm{rot}},\ \mathrm{slow},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{180}\mathrm{Head}_{\mathrm{rot}},\ \mathrm{medium},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{180}\mathrm{Head}_{\mathrm{rot}},\ \mathrm{slow},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{180}\mathrm{Head}_{\mathrm{rot}},\ \mathrm{medium},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{+90/-90}\mathrm{Head}_{\mathrm{osci90}},\ \mathrm{slow},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{+90/-90}\mathrm{Head}_{\mathrm{osci90}},\ \mathrm{medium},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{+90/-90}\mathrm{Head}_{\mathrm{osci90}},\ \mathrm{slow},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{+90/-90}\mathrm{Head}_{\mathrm{osci90}},\ \mathrm{medium},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{\mathrm{osci120}},\ \mathrm{slow},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{\mathrm{osci120}},\ \mathrm{medium},\ -7$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{\mathrm{osci120}},\ \mathrm{slow},\ -10$",
+    r"$\mathrm{S}_{0}\mathrm{N}_{\mathrm{osci120}},\ \mathrm{medium},\ -10$",
+]
+
 scenes = [
 "S0N0_slow_-7",
 "S0N0_medium_-7", 
@@ -104,30 +138,6 @@ scenes = [
 "S0N0osci60_medium_-10",
 ]
 
-# scenes = ["S0N180Headrot360_slow_-7", 
-#             "S0N90N270Headrot90_slow_-7", 
-#             "S0N0_medium_-7", 
-#             "S0N90N270Headrot90_medium_-10", 
-#             "S0N90N270Headrot90_slow_-10", 
-#             "S0N180Headrot360_medium_-7", 
-#             "S0N0osci60_slow_-10", 
-#             "S0N0rot_medium_-7",
-#             "S0N0_slow_-7",
-#             "S0N90_medium_-7",
-#             "S0N180Headrot360_medium_-10",
-#             "S0N0osci60_slow_-7",
-#             "S0N0rot_slow_-10",
-#             "S0N90_slow_-10",
-#             "S0N0rot_medium_-10",
-#             "S0N0rot_slow_-7",
-#             "S0N0osci60_medium_-10",
-#             "S0N90_slow_-7",
-#             "S0N90N270Headrot90_medium_-7",
-#             "S0N0_medium_-10",
-#             "S0N0osci60_medium_-7",
-#             "S0N90_medium_-10",
-#             "S0N0_slow_-10",
-#             "S0N180Headrot360_slow_-10"]
 
 # sets plot style determined in "plot_style.py"
 set_plot_style()
@@ -141,8 +151,13 @@ lemodel_mean10 = []
 subj_means7 = []
 lemodel_mean7 = []
 
-fig, axes = plt.subplots(6,4, figsize=(10, 6), constrained_layout=True)
+fig, axes = plt.subplots(6,4, figsize=(13, 8), constrained_layout=True, sharex='col')
 axes_flat = axes.flatten()
+
+xtick_positions = np.linspace(0, 1, 7)
+xtick_labels = [f'{i}/6' for i in range(7)]
+xtick_labels[0] = 0
+xtick_labels[-1] = 1
 
 #condKeyword = "S0N180Headrot360_medium_-10"
 for idx, condKeyword in enumerate(scenes):
@@ -174,26 +189,16 @@ for idx, condKeyword in enumerate(scenes):
     std_LE = pd.DataFrame(filtered_df["le"].tolist()).std().to_numpy()
     x = np.arange(len(mean_LE))
     
-    # # mean values for correlation
-    # if "-10" in condKeyword:
-    #     subj_means10.append(np.mean(mean_LE).tolist())
-    #     lemodel_mean10.append(np.mean(lemodel_data).tolist())
-    # elif "-7" in condKeyword:
-    #     subj_means7.append(np.mean(mean_LE).tolist())
-    #     lemodel_mean7.append(np.mean(lemodel_data).tolist())
+    # mean values for correlation
+    if "-10" in condKeyword:
+        subj_means10.append(np.mean(mean_LE).tolist())
+        lemodel_mean10.append(np.mean(lemodel_data).tolist())
+    elif "-7" in condKeyword:
+        subj_means7.append(np.mean(mean_LE).tolist())
+        lemodel_mean7.append(np.mean(lemodel_data).tolist())
     
-    # plot stuff
-    # plt.plot(mean_LE)
-    # plt.plot(interp_lemodel, "k:")
-    # plt.ylim([0, 14])
-    # plt.fill_between(x, 
-    #                 mean_LE - std_LE, 
-    #                 mean_LE + std_LE, 
-    #                 color="gray", alpha=0.3, label="Tolerance Area")
-    # plt.legend([f"average", "LEmodel"])
-    # plt.show()
-    
-    
+
+    norm_time = np.linspace(0, 1, len(mean_LE))
     
         # Axes settings
     plt.rcParams["axes.titlesize"] = 8  # Title font size
@@ -205,40 +210,49 @@ for idx, condKeyword in enumerate(scenes):
     plt.rcParams["axes.spines.right"] = False  # Hide right spine
     axes_flat[idx].tick_params(labelsize=6)
     
-    axes_flat[idx].plot(mean_LE)
-    axes_flat[idx].plot(interp_lemodel, "k:")
+    axes_flat[idx].plot(norm_time, mean_LE)
+    axes_flat[idx].plot(norm_time, interp_lemodel, "k:")
     axes_flat[idx].set_ylim([0, 14])
-    axes_flat[idx].fill_between(x, 
-                    mean_LE - std_LE, 
-                    mean_LE + std_LE, 
+    axes_flat[idx].fill_between(norm_time, 
+                    mean_LE - std_LE,
+                    mean_LE + std_LE,
                     color="gray", alpha=0.3, label="Tolerance Area")
-    axes_flat[idx].set_title(condKeyword)
-    axes_flat[idx].legend([f"Subj average", "LEmodel"])
+    axes_flat[idx].set_title(title_names[idx])
+
+    #axes_flat[idx].legend([f"Subj average", "LEmodel"])
+
+    axes_flat[idx].set_xticks(xtick_positions)
+    axes_flat[idx].set_xticklabels(xtick_labels)
+
+fig.text(0.5, -0.01, 'Normalized Time', ha='center')
+fig.text(-0.01, 0.5, 'Listening Effort', va='center', rotation='vertical')
+
 plt.show()
-    
+fig.savefig('/Users/johannesrolfes/Desktop/StudiumHA/Uni/Sem2/Projekt/all_subj_avrg_results.pdf', format='pdf')
+
     
 # SCATTER PLOT
 
-# slope, intercept, r, p, se = st.linregress(subj_means10, lemodel_mean10)
-# print(f"R^2 = {r**2}")
-# print(f"P = {p}")
-# plt.scatter(subj_means10, lemodel_mean10, label="SNR -10")
-# plt.plot(subj_means10, intercept + slope * np.array(subj_means10), 'k-.', alpha=0.5, label=f'Reg -10: {round(intercept, 2)}+{round(slope, 2)}*x')
+slope, intercept, r, p, se = st.linregress(subj_means10, lemodel_mean10)
+print(f"R^2 = {r**2}")
+print(f"P = {p}")
+plt.scatter(subj_means10, lemodel_mean10, label="SNR -10")
+plt.plot(subj_means10, intercept + slope * np.array(subj_means10), 'k-.', alpha=0.5, label=f'Reg -10: {round(intercept, 2)}+{round(slope, 2)}*x')
 
 
-# slope, intercept, r, p, se = st.linregress(subj_means7, lemodel_mean7)
-# print(f"R^2 = {r**2}")
-# print(f"P = {p}")
-# plt.scatter(subj_means7, lemodel_mean7, marker="^", alpha=0.6, label="SNR -7")
-# plt.plot(subj_means7, intercept + slope * np.array(subj_means7), 'k-.', alpha=0.5, label=f'Reg -7: {round(intercept, 2)}+{round(slope, 2)}*x')
+slope, intercept, r, p, se = st.linregress(subj_means7, lemodel_mean7)
+print(f"R^2 = {r**2}")
+print(f"P = {p}")
+plt.scatter(subj_means7, lemodel_mean7, marker="^", alpha=0.6, label="SNR -7")
+plt.plot(subj_means7, intercept + slope * np.array(subj_means7), 'k-.', alpha=0.5, label=f'Reg -7: {round(intercept, 2)}+{round(slope, 2)}*x')
 
 
-# plt.xlim([4, 14])
-# plt.ylim([4, 14])
-# plt.xlabel("Subject average")
-# plt.ylabel("LE Model average")
-# plt.legend()
-# ax = plt.gca()
-# ax.set_aspect('equal', adjustable='box')
-# plt.savefig('/Users/johannesrolfes/Desktop/StudiumHA/Uni/Sem2/Projekt/scatterplot.eps', format='eps')
-# plt.show()
+plt.xlim([4, 14])
+plt.ylim([4, 14])
+plt.xlabel("Subject average")
+plt.ylabel("LE Model average")
+plt.legend()
+ax = plt.gca()
+ax.set_aspect('equal', adjustable='box')
+plt.savefig('/Users/johannesrolfes/Desktop/StudiumHA/Uni/Sem2/Projekt/scatterplot.eps', format='eps')
+plt.show()

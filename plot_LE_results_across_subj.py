@@ -84,6 +84,7 @@ def loadLEToDf(scene, df, window_size=False):
 # (D) S\textsubscript{0}N\textsubscript{+90/-90}Head\textsubscript{osci90} 
 # (E) S\textsubscript{0}N\textsubscript{180}Head\textsubscript{rot} 
 # (F) S\textsubscript{0}N\textsubscript{osci120}
+
 title_names = [
     r"$\mathrm{S}_{0}\mathrm{N}_{0},\ \mathrm{slow},\ -7$",
     r"$\mathrm{S}_{0}\mathrm{N}_{0},\ \mathrm{medium},\ -7$",
